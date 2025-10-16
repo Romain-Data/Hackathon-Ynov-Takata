@@ -3,10 +3,10 @@ from gpiozero import DistanceSensor, Button, PWMOutputDevice
 from time import sleep
 
 # --- Broches GPIO ---
-TRIG = 15
-ECHO = 16
-JOYSTICK_SW = 11
-BUZZER = 13
+TRIG = 22
+ECHO = 23
+JOYSTICK_SW = 17
+BUZZER = 27
 
 # --- Initialisation des composants ---
 sensor = DistanceSensor(echo=ECHO, trigger=TRIG, max_distance=2.0)
