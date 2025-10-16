@@ -8,6 +8,11 @@ export const routes: Routes = [
             import('./pages/home/home.component').then(m => m.HomeComponent),
     },
     {
+        path: 'authenticate',
+        loadComponent: () =>
+            import('./pages/authenticate/authenticate.component').then(m => m.AuthenticateComponent),
+    },
+    {
         path: '',
         pathMatch: 'full',
         redirectTo: 'home',   // redirection de / vers /home
