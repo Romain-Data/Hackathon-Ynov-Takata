@@ -23,12 +23,12 @@ public class Game extends BaseEntity {
 
 	@Column(nullable = false)
 	@Temporal(TemporalType.DATE)
-	private LocalDate startDate;
+	private LocalDate start_date;
 	@Column(nullable = true)
 	@Temporal(TemporalType.DATE)
-	private LocalDate endDate;
-	private int redGoal;
-	private int bleuGoal;
+	private LocalDate end_date;
+	private int red_goal;
+	private int bleu_goal;
 	@Column(nullable = false)
 	@Enumerated(EnumType .STRING)
 	private Winner winner;
