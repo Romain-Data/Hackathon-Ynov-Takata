@@ -27,13 +27,16 @@ Bienvenue dans le Hackathon Ynov Toulouse 2025 !
 
 ## Equipe
 
-- Dev' FullStack 1 : NOM Prénom
-- Dev' FullStack 2 : NOM Prénom
-- Dev' FullStack 3 : NOM Prénom
-- Cloud & Infrastructure 1 : NOM Prénom
-- Cloud & Infrastructure 2 : NOM Prénom
-- IA & Data 1 : NOM Prénom
-- IoT/Mobile / Systèmes Embarqués 1 : NOM Prénom
+- Dev' FullStack 1 : ANTRAYGUES Bastien
+- Dev' FullStack 2 : ABADIE Thomas
+- Dev' FullStack 3 : BERNARD Julien
+- Cloud & Infrastructure 1 : BESOMBES Aurélien
+- Cloud & Infrastructure 2 : CENAC Lucille
+- Cloud & Infrastructure 3 : TEHAHE Haunui
+- IA & Data 1 : COLLERY Romain
+- IoT/Mobile / Systèmes Embarqués 1 : PESCAY Maxime
+- IoT/Mobile / Systèmes Embarqués 2 : AUBIN DE BELLEVUE Maika
+
 
 > Préciser qui est le porte parole de l'équipe, c'est lui qui répondra aux questions si nécessaire.
 
