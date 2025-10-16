@@ -1,10 +1,13 @@
 package fr.ynov.takata_backend.entities;
 
+import java.util.List;
+
 import fr.ynov.takata_backend.enums.RoleUser;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -32,4 +35,7 @@ public class User extends BaseEntity{
 	private RoleUser role;
 	@Column(nullable = false, length = 150)
 	private String password;
+	
+	@OneToMany(mappedBy = "user")
+	private List<User_Game> user_game;
 }
