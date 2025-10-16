@@ -10,7 +10,7 @@ BUZZER = 27
 
 # --- Initialisation des composants ---
 sensor = DistanceSensor(echo=ECHO, trigger=TRIG, max_distance=1.0)  # max 1 m
-button = Button(JOYSTICK_SW, pull_up=True)
+button = Button(JOYSTICK_SW, pull_up=True, bounce_time=0.1)
 buzzer = PWMOutputDevice(BUZZER, frequency=440, initial_value=0)
 
 # --- Mélodie ---
@@ -33,7 +33,7 @@ def play_melody():
     for note in MELODY:
         freq = NOTES[note]
         buzzer.frequency = freq
-        buzzer.value = 2
+        buzzer.value = 0.5
         sleep(NOTE_DURATION)
     buzzer.value = 0
 
