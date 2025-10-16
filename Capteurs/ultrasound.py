@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 from gpiozero import DistanceSensor, Button, PWMOutputDevice
-from time import sleep
+from time import sleep, time
 
 # --- Broches GPIO ---
 TRIG = 22
@@ -9,62 +9,74 @@ JOYSTICK_SW = 17
 BUZZER = 27
 
 # --- Initialisation des composants ---
-sensor = DistanceSensor(echo=ECHO, trigger=TRIG, max_distance=2.0)
+sensor = DistanceSensor(echo=ECHO, trigger=TRIG, max_distance=1.0)  # max 1 m
 button = Button(JOYSTICK_SW, pull_up=True)
 buzzer = PWMOutputDevice(BUZZER, frequency=440, initial_value=0)
 
-# --- Mélodie du buzzer ---
+# --- Mélodie ---
 NOTES = {"C4": 262, "D4": 294, "E4": 330}
-MELODY = ["C4", "D4", "E4"]
-NOTE_DURATION = 0.25
+MELODY = ["C4", "E4", "D4", "C4"]
+NOTE_DURATION = 0.15
 
-# --- Variable de score ---
+# --- Paramètres de détection ---
+BASE_DISTANCE_CM = 7.0      # distance normale quand rien ne passe
+THRESHOLD_DROP_CM = 3.0     # chute minimale pour considérer qu'une balle passe (5→4 cm)
+IGNORE_TIME = 10.0           # temps à ignorer après détection (anti-double-but)
+
+# --- Variables ---
 score = 0
-
+last_detection_time = 0
+smooth_distances = [BASE_DISTANCE_CM] * 5  # buffer pour moyenne mobile
 
 def play_melody():
-    """Joue une courte mélodie sur le buzzer."""
+    """Joue une courte mélodie."""
     for note in MELODY:
         freq = NOTES[note]
         buzzer.frequency = freq
-        buzzer.value = 0.5  # 50% de duty cycle
+        buzzer.value = 2
         sleep(NOTE_DURATION)
-    buzzer.value = 0  # stop
+    buzzer.value = 0
 
-
-def goal_detected():
-    """Action quand la balle est détectée (distance < seuil)."""
-    global score
+def on_goal_detected():
+    """Incrémenter le score et jouer la mélodie."""
+    global score, last_detection_time
     score += 1
-    print(f"🎯 But détecté ! Nouveau score : {score}")
+    last_detection_time = time()
+    print(f"⚽ BUT ! Nouveau score : {score}")
     play_melody()
-    sleep(0.5)
-
 
 def on_button_press():
-    """Action quand le joystick est appuyé (bouton)."""
+    """Appui manuel sur joystick."""
     global score
     score += 1
     print(f"🕹️ Joystick appuyé ! Score : {score}")
     play_melody()
-    sleep(0.5)
 
-
-# --- Attacher la fonction au bouton ---
 button.when_pressed = on_button_press
 
-print("🚀 Système lancé. Ctrl+C pour arrêter.")
-print("Surveillance du capteur HC-SR04 et du joystick...")
+print("🚀 Détection Babyfoot lancée (distance de base ≈ 5 cm). Ctrl+C pour quitter.")
 
 try:
     while True:
-        # Distance renvoyée par le capteur (entre 0 et 1, en proportion du max_distance)
+        # Mesure actuelle
         dist_cm = sensor.distance * 100
-        if dist_cm < 10:  # seuil de détection (10 cm)
-            goal_detected()
 
-        sleep(0.1)
+        # Actualise la moyenne mobile
+        smooth_distances.pop(0)
+        smooth_distances.append(dist_cm)
+        avg_distance = sum(smooth_distances) / len(smooth_distances)
+
+        # Vérifie s'il y a eu un passage rapide
+        now = time()
+        if (avg_distance < (BASE_DISTANCE_CM - THRESHOLD_DROP_CM)
+            and (now - last_detection_time) > IGNORE_TIME):
+            on_goal_detected()
+
+        # Affiche pour debug
+        # print(f"Distance moyenne : {avg_distance:.2f} cm")
+
+        sleep(0.05)  # 20 mesures / seconde
 
 except KeyboardInterrupt:
-    print("\n🛑 Programme interrompu par l'utilisateur.")
+    print("\n🛑 Fin du programme.")
     buzzer.off()
