@@ -1,85 +1,70 @@
-import RPi.GPIO as GPIO
-import time
+#!/usr/bin/env python3
+from gpiozero import DistanceSensor, Button, PWMOutputDevice
+from time import sleep
 
-# --- GPIO ---
+# --- Broches GPIO ---
 TRIG = 15
 ECHO = 16
 JOYSTICK_SW = 11
 BUZZER = 13
 
-GPIO.setmode(GPIO.BCM)
-GPIO.setup(TRIG, GPIO.OUT)
-GPIO.setup(ECHO, GPIO.IN)
-GPIO.setup(JOYSTICK_SW, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-GPIO.setup(BUZZER, GPIO.OUT)
+# --- Initialisation des composants ---
+sensor = DistanceSensor(echo=ECHO, trigger=TRIG, max_distance=2.0)
+button = Button(JOYSTICK_SW, pull_up=True)
+buzzer = PWMOutputDevice(BUZZER, frequency=440, initial_value=0)
 
-# --- PWM pour buzzer ---
-pwm = GPIO.PWM(BUZZER, 440)  # fréquence initiale
-pwm.start(0)  # duty cycle 0 = silence
+# --- Mélodie du buzzer ---
+NOTES = {"C4": 262, "D4": 294, "E4": 330}
+MELODY = ["C4", "D4", "E4"]
+NOTE_DURATION = 0.25
 
-notes = {"C4": 262, "D4": 294, "E4": 330}
-melody = ["C4", "D4", "E4"]
-duration = 0.3
+# --- Variable de score ---
+score = 0
 
-# --- Jouer la mélodie ---
+
 def play_melody():
-    for note in melody:
-        pwm.ChangeFrequency(notes[note])
-        pwm.ChangeDutyCycle(50)
-        time.sleep(duration)
-    pwm.ChangeDutyCycle(0)
+    """Joue une courte mélodie sur le buzzer."""
+    for note in MELODY:
+        freq = NOTES[note]
+        buzzer.frequency = freq
+        buzzer.value = 0.5  # 50% de duty cycle
+        sleep(NOTE_DURATION)
+    buzzer.value = 0  # stop
 
-# --- Lecture distance HC-SR04 ---
-def read_distance():
-    GPIO.output(TRIG, False)
-    time.sleep(0.05)  # pause avant déclenchement
 
-    GPIO.output(TRIG, True)
-    time.sleep(0.00001)
-    GPIO.output(TRIG, False)
+def goal_detected():
+    """Action quand la balle est détectée (distance < seuil)."""
+    global score
+    score += 1
+    print(f"🎯 But détecté ! Nouveau score : {score}")
+    play_melody()
+    sleep(0.5)
 
-    # Attente du front montant avec timeout
-    timeout = time.time() + 0.02
-    while GPIO.input(ECHO) == 0 and time.time() < timeout:
-        pass
-    if time.time() >= timeout:
-        return None
 
-    pulse_start = time.time()
+def on_button_press():
+    """Action quand le joystick est appuyé (bouton)."""
+    global score
+    score += 1
+    print(f"🕹️ Joystick appuyé ! Score : {score}")
+    play_melody()
+    sleep(0.5)
 
-    # Attente du front descendant avec timeout
-    timeout = time.time() + 0.02
-    while GPIO.input(ECHO) == 1 and time.time() < timeout:
-        pass
-    if time.time() >= timeout:
-        return None
 
-    pulse_end = time.time()
+# --- Attacher la fonction au bouton ---
+button.when_pressed = on_button_press
 
-    pulse_duration = pulse_end - pulse_start
-    distance = pulse_duration * 17150  # cm
-    return distance
+print("🚀 Système lancé. Ctrl+C pour arrêter.")
+print("Surveillance du capteur HC-SR04 et du joystick...")
 
 try:
-    print("Test capteurs lancé. Ctrl+C pour arrêter.")
     while True:
-        dist = read_distance()
-        joystick = GPIO.input(JOYSTICK_SW)
+        # Distance renvoyée par le capteur (entre 0 et 1, en proportion du max_distance)
+        dist_cm = sensor.distance * 100
+        if dist_cm < 10:  # seuil de détection (10 cm)
+            goal_detected()
 
-        if dist is not None and dist < 10:
-            print("🎯 Balle détectée !")
-            play_melody()
-            time.sleep(0.5)
-
-        if joystick == 0:  # bouton pressé
-            print("🕹️ Joystick appuyé !")
-            play_melody()
-            time.sleep(0.5)
-
-        time.sleep(0.1)
+        sleep(0.1)
 
 except KeyboardInterrupt:
-    print("\nArrêt du programme.")
-finally:
-    pwm.stop()
-    GPIO.cleanup()
+    print("\n🛑 Programme interrompu par l'utilisateur.")
+    buzzer.off()
