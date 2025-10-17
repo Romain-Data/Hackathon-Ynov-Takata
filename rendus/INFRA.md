@@ -112,6 +112,21 @@ Surveiller en temps réel l’état du Raspberry Pi et des conteneurs.
 **Impact** :\
 → Répond à la section Monitoring avec suivi du host + services, et possibilité d’alerter.
 
+## Ansible
+
+**Rôle** :\
+Automatise la configuration et la gestion des serveurs à l’aide de scripts déclaratifs appelés *playbooks*.
+
+**Pourquoi ce choix** :
+
+* Fonctionne sans agent, uniquement via SSH.
+* Garantit des déploiements reproductibles et cohérents.
+* Simplifie la gestion d’environnements multiples ou complexes.
+
+**Impact** :\
+→ Facilite l’automatisation, la cohérence et la maintenance de l’infrastructure.
+
+
 ## CI/CD avec GitHub Actions
 
 **Rôle** :\
