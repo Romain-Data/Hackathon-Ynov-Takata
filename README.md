@@ -69,13 +69,25 @@ Bienvenue dans le Hackathon Ynov Toulouse 2025 !
 
 > Faite un schéma simple de l'architecture technique de votre solution. Chaque service/composant est un bloc, et les interactions entre les blocs sont des flèches. Vous pouvez utiliser des outils comme [draw.io](https://app.diagrams.net/), ou encore [Excalidraw](https://excalidraw.com/) pour créer vos schémas. C'est une vue d'ensemble, pas un détail de chaque composant. Chacun d'entre vous doit être capable d'expliquer cette architecture.
 
-![img](ressources/schma_infra.png)
+![img](ressources/schéma infra-2.png)
 
 ## Guide de déploiement
 
 > Expliquez comment déployer votre application **EN MOINS DE LIGNES DE COMMANDE POSSIBLES**. Docker, Ansible, Terraform, Scripts Shell... Le but est de pouvoir déployer votre application en une seule commande ou presque.
 
-Exemple de lancement en **une seule commande**:
+Cloner le repository :
+```bash
+git clone https://github.com/Romain-Data/Hackathon-Ynov-Takata.git
+```
+Build des conteneurs :
+```bash
+docker compose build --no-cache
+```
+Lancement de l'appli : 
+```bash
+docker compose up -d
+```
+L'application est maintenant disponible sur http://localhost ou http://<ip_host>
 
 [Références Proxmox HelperScripts](https://github.com/community-scripts/ProxmoxVE/tree/main/install)
 

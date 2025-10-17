@@ -1,4 +1,4 @@
-game_id,date,location,table_id,duration,red_goal,blue_goal,winner,user_id,pseudo,role,player_goals,player_own_goals,player_saves,team,name,surname
+game_id,start_date,location,table_id,duration,red_goal,blue_goal,winner,user_id,pseudo,role,player_goals,player_own_goals,player_saves,team,name,surname
 18838,2023-09-30,Student House,18,844,1,2,BLUE,1,Casey,DEF,0,0,0,BLUE,Casey,PHILIPPE
 19243,2024-06-21,Student House,3,1140,7,4,RED,1,Casey P.,ATK,2,0,10,RED,Casey,PHILIPPE
 15201,2023-11-24,Bar Le Foos,14,553,7,1,RED,1,casey philippe,ATK,1,0,2,BLUE,Casey,PHILIPPE
