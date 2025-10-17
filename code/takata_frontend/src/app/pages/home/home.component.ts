@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TableModule } from 'primeng/table';
+import { Button } from 'primeng/button';
 import { Store } from '@ngxs/store';
 import { GameModel, GameState } from '../../stores/game/game.state';
 import { GameService } from '../../stores/game/game.service';
+import { Router } from '@angular/router';
 
 export interface TableColumn<T> {
   field: keyof T;
@@ -14,7 +16,8 @@ export interface TableColumn<T> {
   selector: 'app-home',
   imports: [
     CommonModule,
-    TableModule
+    TableModule,
+    Button
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
@@ -22,7 +25,7 @@ export interface TableColumn<T> {
 export class HomeComponent implements OnInit{
 
   
-  constructor(private store: Store, private gameService: GameService) {}
+  constructor(private store: Store, private gameService: GameService, private router: Router) {}
   
   gameColumns: TableColumn<GameModel>[] = [
     { field: "babyfoot_tableId", header: "Baby-Foot" },
@@ -34,6 +37,10 @@ export class HomeComponent implements OnInit{
   
   get games() {
     return this.store.select(GameState.gamesInProgress);
+  }
+
+  goToUser() {
+    this.router.navigate(['/user']);
   }
   
   public ngOnInit() {

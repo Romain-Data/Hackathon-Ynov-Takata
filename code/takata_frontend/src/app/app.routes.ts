@@ -18,6 +18,11 @@ export const routes: Routes = [
             import('./pages/register/register.component').then(m => m.RegisterComponent),
     },
     {
+        path: 'user',
+        loadComponent: () =>
+            import('./pages/user/user.component').then(m => m.UserComponent),
+    },
+    {
         path: '',
         pathMatch: 'full',
         redirectTo: 'home',   // redirection de / vers /home
