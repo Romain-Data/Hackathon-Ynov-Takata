@@ -42,8 +42,5 @@ export class GameState {
     @Action(GetGames)
     getGames(ctx: StateContext<GameStateModel>, action: GetGames) {
         ctx.patchState({ games: action.games })
-        // return this.gameService.loadGame().pipe(
-        //     tap((gamesData: GameModel[]) => ctx.patchState({ games: gamesData }))
-        // );
     }
 }
