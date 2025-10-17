@@ -52,6 +52,8 @@ Bienvenue dans le Hackathon Ynov Toulouse 2025 !
 
 > Nous proposons une application web permettant de déclarer ses parties de babyfoot,   
 
+Le projet a pour objectif de digitaliser l’expérience autour des matchs de baby-foot. Du côté des joueurs, il leur permet de créer un compte, d’enregistrer automatiquement leurs parties et de consulter des statistiques personnalisées telles que leur taux de victoire, leur couleur favorite ou encore leur poste de prédilection (attaque ou défense). L’administrateur dispose quant à lui d’un outil pour gérer les tables de baby-foot disponibles, en indiquant lesquelles sont actives ou hors service. Enfin, tout le monde, même sans compte, peut suivre en direct le score des parties en cours grâce à un affichage temps réel accessible depuis un écran ou un navigateur.
+
 ## Technologies utilisées
 
 > Ici, listez les principales technologies, en expliquant pourquoi vous les avez choisies. Tout choix technique, langages, frameworks doit être justifié. (Parce que vous maîtrisez déjà la techno, parce que c'est la plus adaptée au besoin, parce que c'est la plus innovante, etc.)
@@ -98,3 +100,16 @@ L'application est maintenant disponible sur http://localhost ou http://<ip_host>
 > Section d'honnêteté, décrivez ce qui n'a pas été fait, ce qui aurait pu être amélioré, les limitations de votre solution actuelle. Montrez que vous avez une vision critique de votre travail, de ce qui a été accompli durant ces deux demi-journées.
 
 Le but n'est pas de faire un produit fini, mais de montrer vos compétences techniques, votre capacité à travailler en équipe, à gérer un projet, et à livrer quelque chose de fonctionnel dans un temps limité.
+
+---
+**Côté infrastructure** :\
+Plusieurs problèmes ont été rencontrés lors du déploiement, notamment liés à la configuration des environnements et à la mise en place des services nécessaires au bon fonctionnement de l’application. Ces difficultés ont entraîné des retards et ont limité les tests de bout en bout.
+
+**Côté système embarqué** :\
+Nous n’avons pas pu effectuer les tests de communication entre le dispositif embarqué et le backend. En conséquence, la réception et la transmission des scores n’ont pas pu être validées.
+
+**Côté développement applicatif** :\
+La communication entre le backend et le frontend n’a pas été finalisée. Les données sont actuellement transmises sous forme brute, sans traitement ni intégration dans l’interface utilisateur.
+
+**Sécurité et authentification** :\
+Les fonctionnalités d’authentification des utilisateurs et de sécurisation du backend n’ont pas été réalisées. Le système reste donc accessible sans contrôle d’accès ni protection des échanges.
