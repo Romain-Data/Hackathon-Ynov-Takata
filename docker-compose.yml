@@ -58,8 +58,8 @@ services:
       SPRING_DATASOURCE_USERNAME: deploy
       SPRING_DATASOURCE_PASSWORD: xxxx
       SPRING_PROFILES_ACTIVE: prod
-    expose:
-      - "8080"
+    ports:
+      - "8080:8080"
     networks:
       db_net:
         ipv4_address: 172.20.0.20
@@ -75,8 +75,8 @@ services:
       dockerfile: infra/angular_app/Dockerfile
     image: angular_app:arm64
     container_name: angular_app
-    expose:
-      - "4200"
+    ports:
+      - "4200:80"
     networks:
       web_net:
         ipv4_address: 172.21.0.21
@@ -94,8 +94,8 @@ services:
       - "80:80"
       - "443:443"
     volumes:
-      - ./nginx/conf.d:/etc/nginx/conf.d:ro
-      - ./nginx/certs:/etc/nginx/certs:ro
+      - ./infra/nginx/conf.d:/etc/nginx/conf.d:ro
+      - ./infra/nginx/certs:/etc/nginx/certs:ro
     networks:
       web_net:
         ipv4_address: 172.21.0.10
@@ -107,7 +107,7 @@ services:
     image: prom/prometheus:latest
     container_name: prometheus
     volumes:
-      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./monitoring:/etc/prometheus:ro
       - prometheus_data:/prometheus
     ports:
       - "9090:9090"
