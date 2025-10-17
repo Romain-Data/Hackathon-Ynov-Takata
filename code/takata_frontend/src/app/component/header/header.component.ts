@@ -4,6 +4,7 @@ import { ToolbarModule } from 'primeng/toolbar';
 import { ButtonModule } from 'primeng/button';
 import { AvatarModule } from 'primeng/avatar';
 import { SharedModule } from 'primeng/api';
+import { Router, RouterLink } from "@angular/router";
 
 @Component({
   selector: 'app-header',
@@ -12,11 +13,16 @@ import { SharedModule } from 'primeng/api';
     ToolbarModule,
     ButtonModule,
     AvatarModule,
-    SharedModule
-  ],
+    SharedModule,
+    RouterLink
+],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss'
 })
 export class HeaderComponent {
+  constructor(private router: Router){}
 
+  navigate(){
+    this.router.navigate(['/home'])
+  }
 }
