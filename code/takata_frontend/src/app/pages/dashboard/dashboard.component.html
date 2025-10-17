@@ -23,13 +23,13 @@
                     {{ game[col.field] }}
                 </td>
                 <td class="actions">
-                  <button class="modify">
+                  <button class="modify" (click)="editGame(game)">
                     Modifier
                   </button>
-                  <button class="delete">
+                  <button class="delete" (click)="deleteGame(game)">
                     Supprimer
                   </button>
-                  <button class="details">
+                  <button class="details" (click)="viewDetails(game)">
                     Détails
                   </button>
                 </td>
@@ -37,3 +37,15 @@
         </ng-template>
     </p-table>
 </div>
+
+<div *ngIf="selectedGame" class="card">
+  <h2>Détails du babyfoot : {{ selectedGame.babyfoot_Id }}</h2>
+  <ul>
+    <li><strong>Nb de matchs total:</strong> {{ selectedGame.nbmatches }}</li>
+    <li><strong>Etat :</strong> {{ selectedGame.red_goal }}</li>
+    <li><strong>Disponibilité </strong> {{ selectedGame.bleu_goal }}</li>
+  </ul>
+
+  <button class="close" (click)="selectedGame = null">Fermer</button>
+</div>
+

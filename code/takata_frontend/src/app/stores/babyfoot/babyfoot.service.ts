@@ -2,11 +2,15 @@ import { Injectable } from "@angular/core";
 import { Store } from "@ngxs/store";
 import { BabyfootModel } from "./babyfoot.state";
 import { GetGames } from "./babyfoot.actions";
+import { BehaviorSubject } from "rxjs";
 
 @Injectable({ providedIn: 'root' })
 export class BabyfootService {
 
     constructor(private store: Store) { }
+
+    private babyfootsSubject = new BehaviorSubject<BabyfootModel[]>([]);
+    public babyfoots$ = this.babyfootsSubject.asObservable();
 
     loadGame() {
         const babyfootData: BabyfootModel[] = [
@@ -67,5 +71,11 @@ export class BabyfootService {
             },
         ];
         this.store.dispatch(new GetGames(babyfootData));
+    }
+
+    deleteGame(babyfootId: string): void {
+      const current = this.babyfootsSubject.value;
+      const updated = current.filter(game => game.babyfoot_Id !== babyfootId);
+      this.babyfootsSubject.next(updated);
     }
 }
