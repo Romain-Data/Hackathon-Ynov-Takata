@@ -15,5 +15,7 @@ public class GameController extends GenericController<GameDto, Long, GameService
 		super(service);
 		// TODO Auto-generated constructor stub
 	}
+	
+	
 
 }
