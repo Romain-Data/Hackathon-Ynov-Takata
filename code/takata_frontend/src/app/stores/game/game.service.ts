@@ -4,17 +4,18 @@ import { GetGames } from "./game.actions";
 import { GameModel } from "./game.state";
 
 @Injectable({ providedIn: 'root' })
-export class PlanService {
+export class GameService {
 
     constructor(private store: Store) { }
 
-    loadPlan() {
+    loadGame() {
+        console.log('loadGame called');
         const gamesData: GameModel[] = [
             {
                 idTable: "Table1",
                 startDate: new Date('2025-10-16T14:00:00'),
                 endDate: new Date('2025-10-16T15:30:00'),
-                redGoald: 6,
+                redGoal: 6,
                 blueGoal: 10,
                 winner: "Blue",
                 duration: "1h30"
@@ -23,7 +24,7 @@ export class PlanService {
                 idTable: "Table2",
                 startDate: new Date('2025-10-16T14:00:00'),
                 endDate: new Date('2025-10-16T15:30:00'),
-                redGoald: 6,
+                redGoal: 6,
                 blueGoal: 10,
                 winner: "Blue",
                 duration: "1h30"
@@ -32,7 +33,7 @@ export class PlanService {
                 idTable: "Table3",
                 startDate: new Date('2025-10-16T14:00:00'),
                 endDate: new Date('2025-10-16T15:30:00'),
-                redGoald: 6,
+                redGoal: 6,
                 blueGoal: 10,
                 winner: "Blue",
                 duration: "1h30"
@@ -41,7 +42,7 @@ export class PlanService {
                 idTable: "Table4",
                 startDate: new Date('2025-10-16T14:00:00'),
                 endDate: new Date('2025-10-16T15:30:00'),
-                redGoald: 6,
+                redGoal: 6,
                 blueGoal: 10,
                 winner: "Blue",
                 duration: "1h30"

@@ -6,6 +6,7 @@ import Aura from '@primeuix/themes/aura';
 
 import { routes } from './app.routes';
 import { provideStore } from '@ngxs/store';
+import { GameState } from './stores/game/game.state';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -17,7 +18,7 @@ export const appConfig: ApplicationConfig = {
       }
     }),
     provideStore(
-      [],
+      [GameState],
     )
   ]
 };

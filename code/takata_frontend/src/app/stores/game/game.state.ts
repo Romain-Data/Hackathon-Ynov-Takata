@@ -6,7 +6,7 @@ export interface GameModel {
     idTable: string,
     startDate: Date,
     endDate: Date,
-    redGoald: number,
+    redGoal: number,
     blueGoal: number,
     winner?: string,
     duration?: string
@@ -23,15 +23,15 @@ export interface GameStateModel {
     },
 })
 @Injectable()
-export class UserState {
+export class GameState {
 
     @Selector()
-    static users(state: GameStateModel) {
+    static games(state: GameStateModel) {
         return state.games;
     }
 
     @Action(GetGames)
-    setPlans(ctx: StateContext<GameStateModel>, action: GetGames) {
-        ctx.patchState({ games: action.games });
+    getGames(ctx: StateContext<GameStateModel>, action: GetGames) {
+        ctx.patchState({ games: action.games })
     }
 }
