@@ -34,9 +34,9 @@ services:
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: rootpass
-      MYSQL_DATABASE: appdb
-      MYSQL_USER: appuser
-      MYSQL_PASSWORD: apppass
+      MYSQL_DATABASE: takata
+      MYSQL_USER: deploy
+      MYSQL_PASSWORD: xxxx
     volumes:
       - mariadb_data:/var/lib/mysql
     networks:
@@ -54,12 +54,12 @@ services:
     depends_on:
       - mariadb
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mariadb://172.20.0.10:3306/appdb
-      SPRING_DATASOURCE_USERNAME: appuser
-      SPRING_DATASOURCE_PASSWORD: apppass
+      SPRING_DATASOURCE_URL: jdbc:mariadb://172.20.0.10:3306/takata
+      SPRING_DATASOURCE_USERNAME: deploy
+      SPRING_DATASOURCE_PASSWORD: xxxx
       SPRING_PROFILES_ACTIVE: prod
-    expose:
-      - "8080"
+    ports:
+      - "8080:8080"
     networks:
       db_net:
         ipv4_address: 172.20.0.20
@@ -75,8 +75,8 @@ services:
       dockerfile: infra/angular_app/Dockerfile
     image: angular_app:arm64
     container_name: angular_app
-    expose:
-      - "4200"
+    ports:
+      - "4200:80"
     networks:
       web_net:
         ipv4_address: 172.21.0.21
@@ -94,8 +94,8 @@ services:
       - "80:80"
       - "443:443"
     volumes:
-      - ./nginx/conf.d:/etc/nginx/conf.d:ro
-      - ./nginx/certs:/etc/nginx/certs:ro
+      - ./infra/nginx/conf.d:/etc/nginx/conf.d:ro
+      - ./infra/nginx/certs:/etc/nginx/certs:ro
     networks:
       web_net:
         ipv4_address: 172.21.0.10
@@ -107,7 +107,7 @@ services:
     image: prom/prometheus:latest
     container_name: prometheus
     volumes:
-      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./monitoring:/etc/prometheus:ro
       - prometheus_data:/prometheus
     ports:
       - "9090:9090"
@@ -150,15 +150,15 @@ services:
     security_opt:
       - no-new-privileges:true
 
-  ansible:
-    build:
-      context: .
-      dockerfile: infra/ansible/Dockerfile
-    container_name: ansible
-    networks:
-      ansible_net:
-        ipv4_address: 172.30.0.1
-      mon_net:
-    restart: unless-stopped
-    security_opt:
-      - no-new-privileges:true
+#  ansible:
+#    build:
+#      context: .
+#      dockerfile: infra/ansible/Dockerfile
+#    container_name: ansible
+#    networks:
+#      ansible_net:
+#        ipv4_address: 172.30.0.1
+#      mon_net:
+#    restart: unless-stopped
+#    security_opt:
+#      - no-new-privileges:true
