@@ -4,7 +4,7 @@
 
 - Dev' FullStack 1 : ANTRAYGUES Bastien
 - Dev' FullStack 2 : BERNARD Julien
-- Dev' FullStack 3 : NOM Prénom
+- Dev' FullStack 3 : ABADIE Thomas
 
 Et si on réinventait l’expérience babyfoot à Ynov ? L’objectif de ce hackathon est de moderniser et digitaliser l’usage des babyfoots présents dans le Souk pour créer un service _next-gen_, pensé pour près de 1000 étudiants !
 
