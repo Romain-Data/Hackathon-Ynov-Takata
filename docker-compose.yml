@@ -47,7 +47,7 @@ services:
 
   spring_app:
     build:
-      context: infra/spring_app
+      context: .
       dockerfile: infra/spring_app/Dockerfile
     image: spring_app:arm64
     container_name: spring_app
@@ -71,7 +71,7 @@ services:
 
   angular_app:
     build:
-      context: infra/angular_app
+      context: .
       dockerfile: infra/angular_app/Dockerfile
     image: angular_app:arm64
     container_name: angular_app
@@ -152,7 +152,7 @@ services:
 
   ansible:
     build:
-      context: infra/ansible
+      context: .
       dockerfile: infra/ansible/Dockerfile
     container_name: ansible
     networks:
