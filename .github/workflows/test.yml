@@ -1,10 +1,20 @@
-name: CI/CD - Angular + Spring + Docker Compose (RPi)
+name: CI - infra only (hello + build & push images, no deploy)
 
 on:
   push:
-    branches: [ "main", "infra" ]
+    branches: [ "infra" ]
+    paths:
+      - "code/takata_frontend/**"
+      - "code/takata_backend/**"
+      - "infra/**"
+      - ".github/workflows/**"
   pull_request:
-    branches: [ "main", "infra" ]
+    branches: [ "infra" ]
+    paths:
+      - "code/takata_frontend/**"
+      - "code/takata_backend/**"
+      - "infra/**"
+      - ".github/workflows/**"
 
 permissions:
   contents: read
@@ -13,78 +23,98 @@ permissions:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_PREFIX: ghcr.io/${{ github.repository }}   # ghcr.io/owner/repo
-  PLATFORMS: linux/amd64,linux/arm64,linux/arm/v7  # inclut RPi
+  IMAGE_PREFIX: ghcr.io/${{ github.repository }}     # ex: ghcr.io/org/repo
+  PLATFORMS: linux/amd64,linux/arm64,linux/arm/v7    # build multi-arch (inclut RPi)
+  DOCKER_TAG: infra                                   # on tagge 'infra' sur cette branche
 
 jobs:
-  frontend:
-    name: Frontend - Lint & Build Angular
+  hello:
+    name: Smoke test - Hello World
     runs-on: ubuntu-latest
+    steps:
+      - name: Say hello
+        run: echo "✅ Hello World depuis la CI GitHub (branche infra) !"
+
+  frontend:
+    name: Frontend - Lint & Build (Angular)
+    runs-on: ubuntu-latest
+    needs: hello
     defaults:
       run:
-        working-directory: frontend   # <-- adapte ton chemin Angular
+        working-directory: code/takata_frontend
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: 'npm'
-          cache-dependency-path: 'frontend/package-lock.json'
+          cache-dependency-path: 'code/takata_frontend/package-lock.json'
+
       - name: Install deps
         run: npm ci
+
       - name: Lint
         run: npm run lint --if-present
-      - name: Tests
-        run: npm test -- --watch=false --browsers=ChromeHeadless || true  # mets en obligatoire si tu as des tests
-      - name: Build (prod)
+
+      - name: Tests (optionnel)
+        run: npm test -- --watch=false --browsers=ChromeHeadless || true
+
+      - name: Build prod
         run: npm run build -- --configuration production
-      - name: Upload dist (artifact pour l'image Docker)
+
+      - name: Upload dist (artifact)
         uses: actions/upload-artifact@v4
         with:
           name: angular-dist
-          path: frontend/dist/**
+          path: code/takata_frontend/dist/**
 
   backend:
-    name: Backend - Test & Package Spring Boot
+    name: Backend - Tests & Package (Spring Boot)
     runs-on: ubuntu-latest
+    needs: hello
     defaults:
       run:
-        working-directory: backend   # <-- adapte ton chemin Spring Boot
+        working-directory: code/takata_backend
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-java@v4
         with:
-          distribution: 'temurin'
+          distribution: temurin
           java-version: '21'
           cache: 'maven'
+
       - name: Unit tests
         run: mvn -B -DskipITs test
-      - name: Package (jar)
+
+      - name: Package JAR
         run: mvn -B -DskipTests package
-      - name: Upload jar (artifact pour l'image Docker)
+
+      - name: Upload JAR (artifact)
         uses: actions/upload-artifact@v4
         with:
           name: spring-jar
-          path: backend/target/*.jar
+          path: code/takata_backend/target/*.jar
 
   build-and-push:
-    name: Buildx multi-arch & Push images
+    name: Buildx multi-arch & Push images (:infra)
     runs-on: ubuntu-latest
     needs: [ frontend, backend ]
     steps:
       - uses: actions/checkout@v4
 
-      # Récupère les artefacts
+      # Récupère les artefacts (dist Angular + jar Spring)
       - name: Download Angular dist
         uses: actions/download-artifact@v4
         with:
           name: angular-dist
-          path: frontend/dist
-      - name: Download Spring jar
+          path: code/takata_frontend/dist
+      - name: Download Spring JAR
         uses: actions/download-artifact@v4
         with:
           name: spring-jar
-          path: backend/target
+          path: code/takata_backend/target
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
@@ -98,84 +128,44 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      # Tags dynamiques (latest si branche par défaut + sha + nom de branche)
-      - name: Meta app-backend
+      # Tags → 'infra' + tags utiles (sha, branch)
+      - name: Meta backend
         id: meta_backend
         uses: docker/metadata-action@v5
         with:
           images: ${{ env.IMAGE_PREFIX }}-backend
           tags: |
-            type=raw,value=latest,enable={{is_default_branch}}
+            type=raw,value=${{ env.DOCKER_TAG }}
             type=sha,prefix=sha-,format=short
             type=ref,event=branch
-      - name: Meta app-frontend
+      - name: Meta frontend
         id: meta_frontend
         uses: docker/metadata-action@v5
         with:
           images: ${{ env.IMAGE_PREFIX }}-frontend
           tags: |
-            type=raw,value=latest,enable={{is_default_branch}}
+            type=raw,value=${{ env.DOCKER_TAG }}
             type=sha,prefix=sha-,format=short
             type=ref,event=branch
 
-      # Build & push BACKEND (Spring) - suppose un Dockerfile à backend/Dockerfile
+      # Build & push BACKEND
       - name: Build & Push backend
         uses: docker/build-push-action@v6
         with:
-          context: ./backend
-          file: ./backend/Dockerfile
+          context: ./code/takata_backend
+          file: ./code/takata_backend/Dockerfile
           platforms: ${{ env.PLATFORMS }}
-          push: true
+          push: true          # mets 'false' si tu ne veux pas pousser l'image
           tags: ${{ steps.meta_backend.outputs.tags }}
           labels: ${{ steps.meta_backend.outputs.labels }}
-          build-args: |
-            JAR_FILE=$(basename $(ls backend/target/*.jar))
 
-      # Build & push FRONTEND (Angular + Nginx) - suppose un Dockerfile à frontend/Dockerfile
+      # Build & push FRONTEND
       - name: Build & Push frontend
         uses: docker/build-push-action@v6
         with:
-          context: ./frontend
-          file: ./frontend/Dockerfile
+          context: ./code/takata_frontend
+          file: ./code/takata_frontend/Dockerfile
           platforms: ${{ env.PLATFORMS }}
-          push: true
+          push: true          # mets 'false' si tu ne veux pas pousser l'image
           tags: ${{ steps.meta_frontend.outputs.tags }}
           labels: ${{ steps.meta_frontend.outputs.labels }}
-
-  deploy:
-    name: Deploy to Raspberry Pi
-    runs-on: ubuntu-latest
-    needs: [ build-and-push ]
-    if: github.ref == 'refs/heads/main'
-    steps:
-      - name: SSH deploy (docker compose pull & up)
-        uses: appleboy/ssh-action@v1.1.0
-        with:
-          host: ${{ secrets.RPI_HOST }}
-          username: ${{ secrets.RPI_USER }}
-          key: ${{ secrets.RPI_SSH_KEY }}
-          script: |
-            set -e
-            cd ${{ secrets.RPI_DEPLOY_PATH }}
-            # Si ton compose référence les images taggées 'latest', rien à changer.
-            # Sinon, exporte les tags SHA dans un .env et compose les consommera.
-            echo "Pulling images…"
-            docker login ghcr.io -u "${{ github.actor }}" -p "${{ secrets.GITHUB_TOKEN }}" || true
-            docker compose pull
-            docker compose up -d --remove-orphans
-            docker image prune -af || true
-
-      # (Optionnel) Migrations Flyway pour MariaDB
-      - name: Run Flyway migrations
-        if: ${{ success() && vars.ENABLE_FLYWAY == 'true' }}
-        uses: appleboy/ssh-action@v1.1.0
-        with:
-          host: ${{ secrets.RPI_HOST }}
-          username: ${{ secrets.RPI_USER }}
-          key: ${{ secrets.RPI_SSH_KEY }}
-          script: |
-            docker run --rm \
-              -v ${{ secrets.RPI_DEPLOY_PATH }}/db/migrations:/flyway/sql \
-              flyway/flyway:9-alpine \
-              -url="jdbc:mariadb://$DB_HOST:$DB_PORT/$DB_NAME" \
-              -user="$DB_USER" -password="$DB_PASSWORD" migrate
