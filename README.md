@@ -58,9 +58,20 @@ Bienvenue dans le Hackathon Ynov Toulouse 2025 !
 
 > Ici, listez les principales technologies, en expliquant pourquoi vous les avez choisies. Tout choix technique, langages, frameworks doit être justifié. (Parce que vous maîtrisez déjà la techno, parce que c'est la plus adaptée au besoin, parce que c'est la plus innovante, etc.)
 
+- Docker
+- Prometheus
+- Grafana
+- Raspberry Pi 5 (os Rasbian)
+- MariaDB
+- Nginx
+- Spring bout
+- Angular
+
 ## Architecture
 
 > Faite un schéma simple de l'architecture technique de votre solution. Chaque service/composant est un bloc, et les interactions entre les blocs sont des flèches. Vous pouvez utiliser des outils comme [draw.io](https://app.diagrams.net/), ou encore [Excalidraw](https://excalidraw.com/) pour créer vos schémas. C'est une vue d'ensemble, pas un détail de chaque composant. Chacun d'entre vous doit être capable d'expliquer cette architecture.
+
+![img](ressources/schma_infra.png)
 
 ## Guide de déploiement
 
