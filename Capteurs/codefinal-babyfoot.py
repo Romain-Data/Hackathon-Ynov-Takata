@@ -2,18 +2,51 @@
 from gpiozero import DistanceSensor, Button, AngularServo, PWMOutputDevice
 from time import sleep, time
 import requests
+import os
+import RPi.GPIO as GPIO
 
 # --- Pins BCM ---
 TRIG = 22
 ECHO = 23
-JOYSTICK_SW = 26  
-BTN_PIN = 17       
+JOYSTICK_SW = 26  # bouton score manuel
+BTN_PIN = 17      # bouton servo
 SERVO_PIN = 24
 BUZZER_PIN = 27
 
-# --- API ---
-API_RED = "http://APIURL/api/game/red"
-API_BLUE = "http://APIURL/api/game/blue"
+# --- Afficheur 7 segments 5641AS (1 chiffre) ---
+# Pins BCM pour chaque segment (à adapter selon ton câblage)
+segments = {'a':14,'b':15,'c':18,'d':25,'e':5,'f':6,'g':16,'dp':20}
+
+digits = {
+    0: ['a','b','c','d','e','f'],
+    1: ['b','c'],
+    2: ['a','b','g','e','d'],
+    3: ['a','b','c','d','g'],
+    4: ['f','g','b','c'],
+    5: ['a','f','g','c','d'],
+    6: ['a','f','g','c','d','e'],
+    7: ['a','b','c'],
+    8: ['a','b','c','d','e','f','g'],
+    9: ['a','b','c','d','f','g']
+}
+
+GPIO.setmode(GPIO.BCM)
+for seg in segments.values():
+    GPIO.setup(seg, GPIO.OUT)
+    GPIO.output(seg, 0)  # éteint au départ
+
+def display_score(n):
+    """Affiche un chiffre sur le 5641AS"""
+    n = n if n <= 9 else 9  # limiter à 9
+    for seg in segments.values():
+        GPIO.output(seg, 0)
+    for seg_name in digits.get(n, []):
+        GPIO.output(segments[seg_name], 1)
+
+# --- Backend ---
+BASE_API_URL = os.getenv("API_URL", "http://localhost")
+UPDATE_SCORE_URL = f"{BASE_API_URL}/api/game/updateScore"
+TABLE_ID = 1
 
 # --- Composants ---
 sensor = DistanceSensor(echo=ECHO, trigger=TRIG, max_distance=1.0)
@@ -27,49 +60,58 @@ NOTES = {"C4": 262, "D4": 294, "E4": 330}
 MELODY = ["C4", "E4", "D4", "C4"]
 NOTE_DURATION = 0.15
 
-# --- Paramètres de détection ---
+# --- Détection ---
 BASE_DISTANCE_CM = 7.0
 THRESHOLD_DROP_CM = 3.0
 IGNORE_TIME = 10.0
 
-# --- Variables ---
-score = 0
+# --- Scores ---
+score_red = 0
+score_blue = 0
 last_detection_time = 0
 smooth_distances = [BASE_DISTANCE_CM] * 5
 
 # --- Fonctions ---
-def send_score(team):
+def send_score():
+    data = {
+        "red_goal": score_red,
+        "bleu_goal": score_blue,
+        "babyfoot_tableId": TABLE_ID
+    }
     try:
-        if team == "red":
-            requests.post(API_RED)
-        elif team == "blue":
-            requests.post(API_BLUE)
-        print(f"Score envoyé pour {team}")
+        response = requests.post(UPDATE_SCORE_URL, json=data)
+        if response.status_code == 200:
+            print(f"Score envoyé : {data}")
+        else:
+            print(f"Erreur {response.status_code} lors de l'envoi")
     except Exception as e:
-        print(f"Erreur en envoyant le score pour {team} :", e)
+        print("Impossible d'envoyer le score :", e)
 
 def play_melody():
     for note in MELODY:
-        freq = NOTES[note]
-        buzzer.frequency = freq
+        buzzer.frequency = NOTES[note]
         buzzer.value = 0.5
         sleep(NOTE_DURATION)
     buzzer.value = 0
 
 def on_goal_detected():
-    global score, last_detection_time
-    score += 1
+    """Capteur détecte un but rouge"""
+    global score_red, last_detection_time
+    score_red += 1
     last_detection_time = time()
-    print(f"⚽ BUT ! Nouveau score : {score}")
+    print(f"BUT Rouge ! Score : R={score_red} B={score_blue}")
     play_melody()
-    send_score("red")
+    send_score()
+    display_score(score_red)  # <-- Affiche score rouge sur 1 chiffre
 
 def on_score_button():
-    global score
-    score += 1
-    print(f"🕹️ Joystick appuyé ! Score : {score}")
+    """Joystick ajoute un point bleu"""
+    global score_blue
+    score_blue += 1
+    print(f"Point Bleu ! Score : R={score_red} B={score_blue}")
     play_melody()
-    send_score("red")
+    send_score()
+    display_score(score_blue)  # <-- Affiche score bleu sur 1 chiffre
 
 def set_angle(angle):
     servo.angle = angle
@@ -81,7 +123,7 @@ def beep(duration=0.2):
     sleep(duration)
     buzzer.off()
 
-# --- Configuration servo ---
+# --- Servo initial ---
 CLOSED_ANGLE = 0
 OPEN_ANGLE = 180
 set_angle(CLOSED_ANGLE)
@@ -89,12 +131,15 @@ set_angle(CLOSED_ANGLE)
 # --- Liaisons boutons ---
 score_button.when_pressed = on_score_button
 
-print("🚀 Babyfoot + servo lancé. Ctrl+C pour quitter.")
+# --- Afficheur initial ---
+display_score(score_red)
+
+print("Babyfoot + servo + afficheur lancé. Ctrl+C pour quitter.")
 
 # --- Boucle principale ---
 try:
     while True:
-        # Détection balle
+        # Détection balle rouge
         dist_cm = sensor.distance * 100
         smooth_distances.pop(0)
         smooth_distances.append(dist_cm)
@@ -117,7 +162,8 @@ try:
         sleep(0.02)
 
 except KeyboardInterrupt:
-    print("\n🛑 Fin du programme.")
+    print("\nFin du programme.")
 finally:
     servo.detach()
     buzzer.off()
+    GPIO.cleanup()
