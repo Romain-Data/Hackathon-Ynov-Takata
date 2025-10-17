@@ -6,4 +6,5 @@ import fr.ynov.takata_backend.entities.Game;
 
 public interface GameRepository extends JpaRepository<Game, Long> {
 
+	
 }
