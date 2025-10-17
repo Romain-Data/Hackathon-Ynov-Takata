@@ -35,19 +35,26 @@ Merci de votre participation, et bon courage pour la suite du hackathon !
 # Les fonctionallités implémentées
 
 ## Front-end
+- Initialisation du projet **Angular**.
+- Création du **store** pour les entités `User`, `Game` et `Babyfoot`, avec des données en dur en attendant l’évolution du back-end.
+- Création de la **page d’accueil**, contenant un tableau permettant de suivre les scores des parties en cours.
+- Création de la **page d’authentification** et de la **page de création de compte**.
+- Création de la **page Dashboard**, avec un tableau récapitulant les informations sur les babyfoots et offrant la possibilité de `modifier` ou `supprimer` un babyfoot.
+- Création de la **page User**, affichant les informations de l’utilisateur et permettant de `créer une partie`.
 
 ## Back-end
 - Initialisation du projet avec création des entités : User, Game, BabyFoot_table, User_Game
 - Ajout du CRUD Pour chaque entité ( Repository, Service, Controller )
-- Création d'un service et d'un controller généric possèdant la logique du CRUD qui est hérité par tout les services, controllers
-- Ajout de la fonctionnalité d'updateScore qui attend le score à mettre à jour dans la base de donnée.
+- Création d’un service et d’un contrôleur génériques contenant la logique du CRUD, hérités par l’ensemble des services et contrôleurs spécifiques.
+- Ajout d’une fonctionnalité `updateScore` permettant de mettre à jour le score d’une partie dans la base de données.
 - Création de DTO : BabyFoot_tableDTO, UserDto, GameDto, User_GameDto, GameResultDto
 
 # Technologies utilisées
 
 ## Angular
 
-**Rôle** :\
+**Rôle** :
+- Framework javascript Front-end
 
 **Pourquoi ce choix** :
 - framework connu par l'équipe dev
@@ -73,10 +80,16 @@ Système de gestion de base de donnée, utilisé pour stocker les données sur d
 **Pourquoi ce choix**: 
 MariaDb est facile à mettre en place.
 
+# Architecture globale
+
+Le projet suit une architecture en trois couches : le front Angular communique avec le back-end Spring Boot via des endpoints REST, et le back-end interagit avec la base MariaDB via JPA/Hibernate.
+
 # Difficulté rencontré
-- Créer un prototype en 1 journée qui communique la partie des système embarqué, le déploiements du site.
+- Créer un prototype en une journée intégrant la communication avec le système embarqué et le déploiement complet du site.
 - Relier le front, le back et la base de donnée entre eux tout en ayant déployer le site.
-- Créer l'API sans avoir de BD propre et complété dans le temps imparti.
+- Créer l’API sans base de données finalisée dans le temps imparti et assurer la communication entre le front-end et le back-end.
+- Utilisation de **Chart.js** pour la création des graphiques destinés aux utilisateurs.
+- Développement de l’ensemble des fonctionnalités prévues pour le front-end dans le temps imparti.
 
 # Collaboration avec les autre filliaire
 
@@ -84,7 +97,7 @@ MariaDb est facile à mettre en place.
 Nous avons pu travailler ensemble sur la création de la base de donnée en créant les tables et les élèments qu'il contiendrait. Pour chaque changement dans les entitées créer je communiquer les changements avec ma team DATA.
 
 ## Sytème Embarqué
-Nous avons discuté ensemble de la communication entre le système embarqué et le back-end. Nous avons conclu qu’il fallait déterminer ensemble les données que je recevais. Après une bonne discution, nous avons décidé que le back-end reçois le score de la team Bleu et Rouge.
+Nous avons collaboré pour définir la communication entre le système embarqué et le back-end. Après discussion, nous avons décidé que le back-end recevrait les scores des équipes bleue et rouge directement depuis le système embarqué.
 
 ## Infra
-J'ai donné le back-end sur github et répondu à toute question pour aider sur le déploiement de l'application. J'ai aidé à résoudre un problème au niveau de l'accès à la route du back-end, en testant sur POSTMAN les routes, le problème étant qu'il avait mis dans le déploiement avec l'URL api, ce qui donnais "URL_API/api/api/user" problème qui sera résous par mes camarade Infra
+J’ai mis à disposition le back-end sur GitHub et accompagné l’équipe Infra pour le déploiement. J’ai également aidé à résoudre un problème d’accès aux routes API lors du déploiement (redondance dans l’URL : `URL_API/api/api/user`), en le détectant via des tests Postman. Le problème a ensuite été corrigé par mes camarades de l’équipe Infra.
