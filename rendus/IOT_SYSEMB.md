@@ -2,7 +2,7 @@
 
 ## Equipe
 
-- Systèmes Embarqués 1 : PESCAY Maxime & AUBIN DE BELLEVUE Maika
+- Systèmes Embarqués 1 : PESCAY Maxime & AUBIN DE BELLEVUE Maïka
 
 Et si on réinventait l’expérience babyfoot à Ynov ? L’objectif de ce hackathon est de moderniser et digitaliser l’usage des babyfoots présents dans le Souk pour créer un service _next-gen_, pensé pour près de 1000 étudiants !
 
@@ -33,21 +33,46 @@ Merci de votre participation, et bon courage pour la suite du hackathon !
 
 # Notre travail : 
 
-Afin de mener à bien ce projet nous avons fais en sorte que nos systèmes soient les points de départs de chaque fonctionnalités. Nous avons donc souhaités concevoir plusieurs systèmes embarqués permettants de fiabiliser un maximum d'informations et améliorer l'expérience de jeu. 
-Tout d'abord, qu'avons nous mis en place ? 
-Afin de comptabiliser le nombre de relances dans une partie nous avons mis au point un lanceur de balle qui affiche digitalement le nombre de relances dans une partie. Ensuite, afin de suivre le cours du match nous avons mis en place deux systèmes de comptabilisation des points. 
+Afin de mener à bien ce projet, nous avons fait en sorte que nos systèmes soient les points de départ de chaque fonctionnalité. Nous avons donc souhaité concevoir plusieurs systèmes embarqués permettant de fiabiliser un maximum d’informations et d’améliorer l’expérience de jeu.
 
-Quelles sont les technologies utilisées pour mener à bien ces actions ? 
+Tout d’abord, qu’avons-nous mis en place ?
+Afin de comptabiliser le nombre de relances dans une partie, nous avons mis au point un lanceur de balle qui affiche le nombre de relances effectuées sur un afficheur 7 segments. Ensuite, pour suivre le déroulement du match, nous avons mis en place deux systèmes de comptabilisation des points.
 
-Afin de mettre en place le maximum de technologies sur une seul même système nous avons optés pour le choix d'un raspberry PI5. Grâce aux nombreux GPIO de la raspberry ainsi que ses fonctionnalités réseaux nous avons pus envoyer à la partie application les données de chaque matchs.
-Pour la mis en place de la raspberry nous avons utilisés raspbian OS et mis en place une connexion en SSH pour communiquer avec. Afin de centraliser nos données la créeation d'une branche SYSembarqués nous as permis de pouvoir travailler sur notre projet sans génere au dévleoppemtn sur la branche main. 
-Le codage de tous les capteurs a été fait en python. 
+# Technologies utilisées
 
-Nous avons donc choisis de prendre des capteurs à ultrason afin de détecter le passage d'une main lors du ramassage de la balle, ce qui signifie qu'un but a été mis. 
-De l'autre côté du babyfoot se trouve un capteur à bouton pour signifieer que vous venez de marquer un but. donc deux manières différentes de rajouter un point au score total. 
-Afin de mettre en place le lancement de la balle nous avons modélisés en 3D une bascule qui s'active lors de la préssion d'un bouton qui active lui même un servomoteur pour une bascule complète. Le servomoteur reviens ensuite à sa place afin de relever le lanceur. A chaque fois qu'une balle est envoyée un compteur analogique s'incrémente et annonce le nombre de relances dans une partie. 
-Tout ça dans une démarche de proposer des aides personnalisées sur ses parties. Une version compétitive du babyfoot !
-Le cablage de tous ces systèmes a été fait à l'aide d'une breadboard, de résistances et de fil dupont.
+Pour intégrer un maximum de fonctionnalités sur un seul et même système, nous avons choisi d’utiliser un Raspberry Pi 5. Grâce à ses nombreux GPIO et à ses capacités réseau, nous avons pu envoyer les données de chaque match à la partie applicative.
+La configuration a été réalisée sous Raspberry Pi OS, avec une connexion SSH pour la communication et le déploiement du code.
+Afin de centraliser nos données, la création d’une branche SYS_embarqués nous a permis de développer sans interférer avec la branche principale du projet.
+L’ensemble des capteurs et actionneurs a été programmé en Python.
 
-Une fois nos données récupérées nous avons pensés à un envoie par https à l'autre raspberry qui comprends l'infrastructure. 
-Nous relions donc parfaitement notre domaine aux autres et proposons une application complète. 
+Nous avons utilisé un capteur à ultrason (HC-SR04) pour détecter le passage d’une balle dans le but, indiquant qu’un point a été marqué.
+De l’autre côté du babyfoot, un bouton poussoir permet également de signaler un but, offrant ainsi deux manières différentes d’ajouter un point au score total.
+
+Pour le lancement de la balle, on nous a modélisé en 3D une bascule mécanique actionnée par un servomoteur. Ce dernier est activé par la pression d’un bouton et revient automatiquement à sa position initiale après le lancement.
+Chaque fois qu’une balle est relancée, un afficheur 7 segments s’incrémente pour indiquer le nombre total de relances effectuées pendant la partie.
+L’ensemble du câblage a été réalisé à l’aide d’une breadboard, de résistances et de fils Dupont.
+
+Enfin, les données sont envoyées via requête HTTP vers une autre Raspberry Pi qui gère l’infrastructure du backend.
+Ce système relie parfaitement la partie embarquée au reste du projet et permet de proposer une application de babyfoot connectée complète et interactive.
+
+# Composants utilisés
+
+Voici la liste des composants utilisés et leur rôle dans le projet :
+
+Raspberry Pi 5 : Microcontrôleur principal : exécute le code Python, gère les capteurs, le servomoteur et la communication avec le backend
+
+Capteur ultrason HC-SR04 : Détecte le passage de la balle dans le but pour comptabiliser un point
+
+Joystick (B105348) :	Permet d’ajouter manuellement un point pour l’équipe bleue
+
+Servomoteur : Actionne mécaniquement une bascule pour relancer la balle
+
+Buzzer piézo :	Joue une courte mélodie (Do-Ré-Mi) à chaque but ou relance
+
+Afficheur 7 segments 5641AS :	Affiche le nombre de relances effectuées pendant la partie
+
+Câblage GPIO (fils Dupont, résistances, breadboard) :	Relie l’ensemble des composants au Raspberry Pi et assure le bon fonctionnement électrique du système
+
+# Conclusion
+
+Ce projet nous a permis de concevoir un système complet de babyfoot connecté, intégrant à la fois la partie embarquée et la communication avec un backend. Nous avons appris à gérer les capteurs, les actionneurs et l’affichage local tout en envoyant les données vers une infrastructure distante pour centraliser les scores et les relances. Cette expérience nous a permis de comprendre l’importance de l’intégration entre le matériel et le logiciel pour créer une application interactive et fiable.
