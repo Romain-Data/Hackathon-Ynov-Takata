@@ -3,11 +3,11 @@ import { Action, State, StateContext, Selector, Store } from "@ngxs/store";
 import { GetGames, GetGamesInProgress } from "./game.actions";
 
 export interface GameModel {
-    idTable: string,
-    startDate: Date,
-    endDate?: Date,
-    redGoal: number,
-    blueGoal: number,
+    babyfoot_tableId: string,
+    start_date: Date,
+    end_date?: Date,
+    red_goal: number,
+    bleu_goal: number,
     winner?: string,
     duration?: string
 }
@@ -32,7 +32,7 @@ export class GameState {
 
     @Selector()
     static gamesInProgress(state: GameStateModel) {
-        return state.games.filter(game => game.endDate === undefined);
+        return state.games.filter(game => game.end_date === undefined);
     }
 
     @Action(GetGames)

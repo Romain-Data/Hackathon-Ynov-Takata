@@ -25,9 +25,9 @@ export class HomeComponent implements OnInit{
   constructor(private store: Store, private gameService: GameService) {}
   
   gameColumns: TableColumn<GameModel>[] = [
-    { field: "idTable", header: "Baby-Foot" },
-    { field: "redGoal", header: "Score Rouge", centred: true },
-    { field: "blueGoal", header: "Score Bleu", centred: true },
+    { field: "babyfoot_tableId", header: "Baby-Foot" },
+    { field: "red_goal", header: "Score Rouge", centred: true },
+    { field: "bleu_goal", header: "Score Bleu", centred: true },
     { field: "winner", header: "Gagnant" },
     { field: "duration", header: "Durée" },
   ]
