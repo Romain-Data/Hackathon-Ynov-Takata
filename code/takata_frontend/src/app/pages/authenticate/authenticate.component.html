@@ -1,0 +1,19 @@
+<body>
+  <div class="form-container">
+    <h2>Se connecter</h2>
+    <form>
+      <div class="form-group">
+        <label for="username">Pseudo:</label>
+        <input type="text" pInputText [(ngModel)]="username" />
+      </div>
+      <div class="form-group">
+        <label for="password">Mot de passe:</label>
+        <input type="password" [(ngModel)]="password" required="" />
+        <button pButton severity="secondary" type="submit"><span pButtonLabel>Se connecter</span></button>
+      </div>
+      <div><a href="/register" class="register">Créer un mot de passe </a>
+
+      </div>
+    </form>
+  </div>
+</body>
