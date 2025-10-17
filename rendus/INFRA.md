@@ -156,13 +156,15 @@ L'infrastructure est opérationnelle :
 
 Cependant, suite à des problèmes rencontrés avec la base de données, l'API backend (spring boot) ne fonctionne pas correctement, empêchant l'accès aux données via l'API.
 
-De plus, impossible de tester nos configurations ansible car nous sommes bloqués par d'autres étapes antérieures
+De plus, impossible de tester nos configurations ansible car nous sommes bloqués par d'autres étapes ultérieures.
 
-Par ailleurs, suite à un manque de matériel, de temps et de connaissances nous n'avons pas pu finaliser la partie CI/CD avec Github Actions
+Par ailleurs, nous avons été limités par un manque de matériel, de temps et de connaissances techniques.
+L’infrastructure repose sur un seul Raspberry Pi (4 Go de RAM) hébergeant l’ensemble des services (application, base de données, proxy, monitoring), ce qui a restreint nos possibilités de tests et de déploiement automatisé.
+Enfin, le manque d’expérience avec GitHub Actions et la gestion des secrets n’a pas permis de finaliser la chaîne CI/CD.
 
 # Axes d'améliorations
 
-Plusieurs évolutions sont prévues pour fiabiliser davantage notre infrastructure :
+Plusieurs évolutions sont possibles pour fiabiliser davantage notre infrastructure :
 
 **Mettre en place le conteneur de sauvegarde MariaDB** \
 Pour l’instant, aucune sauvegarde automatisée n’est opérationnelle. La création de ce conteneur est donc essentielle afin de garantir la protection des données et de pouvoir les restaurer en cas de défaillance.
