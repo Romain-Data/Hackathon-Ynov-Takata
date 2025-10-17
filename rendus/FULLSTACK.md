@@ -77,3 +77,14 @@ MariaDb est facile à mettre en place.
 - Créer un prototype en 1 journée qui communique la partie des système embarqué, le déploiements du site.
 - Relier le front, le back et la base de donnée entre eux tout en ayant déployer le site.
 - Créer l'API sans avoir de BD propre et complété dans le temps imparti.
+
+# Collaboration avec les autre filliaire
+
+## Data
+Nous avons pu travailler ensemble sur la création de la base de donnée en créant les tables et les élèments qu'il contiendrait. Pour chaque changement dans les entitées créer je communiquer les changements avec ma team DATA.
+
+## Sytème Embarqué
+Nous avons discuté ensemble de la communication entre le système embarqué et le back-end. Nous avons conclu qu’il fallait déterminer ensemble les données que je recevais. Après une bonne discution, nous avons décidé que le back-end reçois le score de la team Bleu et Rouge.
+
+## Infra
+J'ai donné le back-end sur github et répondu à toute question pour aider sur le déploiement de l'application. J'ai aidé à résoudre un problème au niveau de l'accès à la route du back-end, en testant sur POSTMAN les routes, le problème étant qu'il avait mis dans le déploiement avec l'URL api, ce qui donnais "URL_API/api/api/user" problème qui sera résous par mes camarade Infra
