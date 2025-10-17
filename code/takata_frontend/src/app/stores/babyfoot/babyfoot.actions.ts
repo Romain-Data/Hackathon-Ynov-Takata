@@ -8,3 +8,8 @@ export class GetGames {
 export class GetGamesInProgress {
     static readonly type = '[GamesInProgress] get'
 }
+
+export class DeleteGame {
+  static readonly type = '[Babyfoot] Delete Game';
+  constructor(public babyfootId: string) {}
+}

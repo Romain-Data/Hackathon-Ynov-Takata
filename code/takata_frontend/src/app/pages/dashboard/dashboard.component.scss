@@ -1,0 +1,26 @@
+.card {
+  margin-top: 20px;
+  padding: 16px;
+  background-color: #1e1e1e;
+  border: 1px solid #444;
+  border-radius: 8px;
+  color: white;
+}
+
+.card ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.card li {
+  margin-bottom: 8px;
+}
+
+.card .close {
+  margin-top: 10px;
+  background-color: #888;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+}

@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { Action, State, StateContext, Selector, Store } from "@ngxs/store";
-import { GetGames } from "./babyfoot.actions";
+import { DeleteGame, GetGames } from "./babyfoot.actions";
 export interface BabyfootModel {
     babyfoot_Id: string,
     end_date?: Date,
@@ -10,13 +10,15 @@ export interface BabyfootModel {
 }
 
 export interface BabyfootStateModel {
-    babyfoots: BabyfootModel[]
+    babyfoots: BabyfootModel[],
+    gamesInProgress: BabyfootModel[];
 }
 
 @State<BabyfootStateModel>({
     name: "babyfoot",
     defaults: {
-        babyfoots: []
+        babyfoots: [],
+        gamesInProgress: []
     },
 })
 @Injectable()
@@ -36,4 +38,14 @@ export class BabyfootState {
     getGames(ctx: StateContext<BabyfootStateModel>, action: GetGames) {
         ctx.patchState({ babyfoots: action.games })
     }
+
+    @Action(DeleteGame)
+    deleteGame(ctx: StateContext<BabyfootStateModel>, action: DeleteGame) {
+      const state = ctx.getState();
+      const updated = state.gamesInProgress.filter(game => game.babyfoot_Id !== action.babyfootId);
+      ctx.patchState({
+        gamesInProgress: updated
+      });
+    }
+
 }
