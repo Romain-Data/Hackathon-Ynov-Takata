@@ -37,7 +37,6 @@ input, p-password, button {
   width: 100%;
   padding: 10px;
   margin: 5px 0 15px;
-  border: 1px solid #ccc;
   border-radius: 5px;
   font-size: 16px;
 }
@@ -74,8 +73,6 @@ button:hover {
 
   input, p-password, button {
     background-color: #2c2c2c;
-    color: #ffffff;
-    border: 1px solid #555;
   }
 
   button {

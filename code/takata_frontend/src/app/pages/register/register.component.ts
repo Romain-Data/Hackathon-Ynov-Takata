@@ -11,7 +11,20 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './register.component.scss'
 })
 export class RegisterComponent {
-  password1: string ='';
+  email: string ='';
+  username: string = '';
+  password: string ='';
   password2: string ='';
+  name: string ='';
+  surname: string ='';
+  role="user";
 
-}
+  onSubmit() {
+      if(this.username == '' || this.email =='' || this.password == '' || this.name =='' || this.surname == ''){
+        alert('Veuillez entrer votre informations correctement.')
+      } else {
+      alert(`Création du compte du joueur !\nemail: ${this.email}\nNom: ${this.name}\nPrénom: ${this.surname} \nUsername: ${this.username}\nPassword: et non on est sécur ici`);
+      }
+    }
+  }
+
