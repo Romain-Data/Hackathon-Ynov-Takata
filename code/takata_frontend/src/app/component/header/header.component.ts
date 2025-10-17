@@ -22,7 +22,10 @@ import { Router, RouterLink } from "@angular/router";
 export class HeaderComponent {
   constructor(private router: Router){}
 
-  navigate(){
+  home(){
     this.router.navigate(['/home'])
+  }
+  dashboard(){
+    this.router.navigate(['/dashboard'])
   }
 }
