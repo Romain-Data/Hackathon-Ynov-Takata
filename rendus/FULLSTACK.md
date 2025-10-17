@@ -54,7 +54,7 @@ Merci de votre participation, et bon courage pour la suite du hackathon !
 - simple d'utilisation
 
 **Impact** :
-
+- Initialisation rapide des pages et séquencement des fichiers pour une meilleur organisation dans le projet.
 
 ## Spring Boot
 **Rôle** :
@@ -75,3 +75,5 @@ MariaDb est facile à mettre en place.
 
 # Difficulté rencontré
 - Créer un prototype en 1 journée qui communique la partie des système embarqué, le déploiements du site.
+- Relier le front, le back et la base de donnée entre eux tout en ayant déployer le site.
+- Créer l'API sans avoir de BD propre et complété dans le temps imparti.
