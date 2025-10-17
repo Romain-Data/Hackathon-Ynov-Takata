@@ -87,7 +87,7 @@ Lancement de l'appli :
 ```bash
 docker compose up -d
 ```
-L'application est maintenant disponible sur http://localhost:8080
+L'application est maintenant disponible sur http://localhost ou http://<ip_host>
 
 [Références Proxmox HelperScripts](https://github.com/community-scripts/ProxmoxVE/tree/main/install)
 
