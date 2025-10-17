@@ -63,7 +63,7 @@ Bienvenue dans le Hackathon Ynov Toulouse 2025 !
 - Docker - Conteneurisation des services
 - Prometheus - Surveillance et métriques
 - Grafana - Visualisation des données
-- Raspberry Pi 5 (os Rasbian) - 
+- Raspberry Pi 5 (Rasbian)
 - MariaDB - Base de données relationnelle
 - Nginx - Serveur web et reverse proxy
 - Spring boot - Backend Java
