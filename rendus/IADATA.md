@@ -54,6 +54,7 @@ Malgré tout ça, au moment du déploiement, on se retrouve avec quelques probl�
 ## Nettoyage du dataset.
 
 _merci pour ce dataset... si propre_
+
 Pour le nettoyage, j'ai essayé de trouver un compromis entre la rapidité et l'efficacité : 
 
 Les différentes étapes du nettoyage ont été : 
@@ -63,7 +64,7 @@ Les différentes étapes du nettoyage ont été :
     - winner incompatible avec le score renseigné
     - partie de plus de 20min
 
-Cette étape pourrait être compléteée par des vérifications plus poussées comme vérifier la cohérence du score déclaré avec la somme des buts marqués individuellement par les joueurs.
+Cette étape pourrait être complétée par des vérifications plus poussées comme vérifier la cohérence du score déclaré avec la somme des buts marqués individuellement par les joueurs.
 
 
 ## Analyse exploratoire
