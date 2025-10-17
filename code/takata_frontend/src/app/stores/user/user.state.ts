@@ -31,13 +31,8 @@ export class UserState {
         return state.users;
     }
 
-    @Selector()
-    static token(state: UserStateModel) {
-        return state.users;
-    }
-
     @Action(GetUser)
-    setPlans(ctx: StateContext<UserStateModel>, action: GetUser) {
+    getUser(ctx: StateContext<UserStateModel>, action: GetUser) {
         ctx.patchState({users: action.users});
     }
 }

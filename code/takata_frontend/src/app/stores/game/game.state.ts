@@ -1,6 +1,8 @@
 import { Injectable } from "@angular/core";
 import { Action, State, StateContext, Selector, Store } from "@ngxs/store";
-import { GetGames, GetGamesInProgress } from "./game.actions";
+import { GetGames } from "./game.actions";
+import { GameService } from "./game.service";
+import { tap } from "rxjs";
 
 export interface GameModel {
     babyfoot_tableId: string,
@@ -25,6 +27,8 @@ export interface GameStateModel {
 @Injectable()
 export class GameState {
 
+    constructor( private gameService: GameService ){}
+
     @Selector()
     static games(state: GameStateModel) {
         return state.games;
@@ -38,5 +42,8 @@ export class GameState {
     @Action(GetGames)
     getGames(ctx: StateContext<GameStateModel>, action: GetGames) {
         ctx.patchState({ games: action.games })
+        // return this.gameService.loadGame().pipe(
+        //     tap((gamesData: GameModel[]) => ctx.patchState({ games: gamesData }))
+        // );
     }
 }

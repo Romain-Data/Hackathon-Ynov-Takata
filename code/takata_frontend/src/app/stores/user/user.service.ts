@@ -4,20 +4,19 @@ import { GetUser } from "./user.actions";
 import { UserModel } from "./user.state";
 
 @Injectable({ providedIn: 'root' })
-export class GameService {
+export class UserService {
 
     constructor(private store: Store) { }
 
     loadUsers() {
         const userData: UserModel[] = [
             {
-                idTable: "Table1",
-                startDate: new Date('2025-10-16T14:00:00'),
-                endDate: new Date('2025-10-16T15:30:00'),
-                redGoal: 6,
-                blueGoal: 10,
-                winner: "Blue",
-                duration: "1h30"
+                name: "tommy",
+                surname: "shelby",
+                pseudo: "tommy32",
+                mail: "tommy@gmail.com",
+                role: "user",
+                password: "string"
             },
         ];
         this.store.dispatch(new GetUser(userData));
