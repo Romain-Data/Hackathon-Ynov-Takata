@@ -16,7 +16,10 @@ export class AuthenticateComponent {
 
   onSubmit() {
     //login feature to add
-    console.log('Username:', this.username);
-    console.log('Password:', this.password);
+    if(this.username == '' || this.password == ''){
+      alert('Veuillez entrer votre informations.')
+    } else {
+    alert(`Envoie des données !\nUsername: ${this.username}\nPassword: ${this.password} et non on est sécur ici`);
+    }
   }
 }
