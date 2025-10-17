@@ -1,10 +1,13 @@
 package fr.ynov.takata_backend.services.impl;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import fr.ynov.takata_backend.dto.GameDto;
 import fr.ynov.takata_backend.entities.Game;
+import fr.ynov.takata_backend.enums.Team;
 import fr.ynov.takata_backend.generic.GenericServiceImpl;
 import fr.ynov.takata_backend.repositories.GameRepository;
 import fr.ynov.takata_backend.services.GameService;
@@ -18,6 +21,13 @@ public class GameServiceImpl extends GenericServiceImpl<Game, GameDto, Long, Gam
 			ModelMapper mapper) {
 		super(repository, Game.class, GameDto.class, mapper);
 		// TODO Auto-generated constructor stub
+	}
+
+	@Override
+	public ResponseEntity setScoreByTeam(Team team) {
+		
+		
+		return ResponseEntity.ok(HttpStatus.OK);
 	}
 
 
