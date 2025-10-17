@@ -9,7 +9,6 @@ export class GameService {
     constructor(private store: Store) { }
 
     loadGame() {
-        console.log('loadGame called');
         const gamesData: GameModel[] = [
             {
                 idTable: "Table1",
@@ -58,6 +57,62 @@ export class GameService {
             },
             {
                 idTable: "Table6",
+                startDate: new Date('2025-10-16T14:00:00'),
+                redGoal: 6,
+                blueGoal: 10,
+                winner: "Blue",
+                duration: "1h30"
+            },
+            {
+                idTable: "Table7",
+                startDate: new Date('2025-10-16T14:00:00'),
+                redGoal: 6,
+                blueGoal: 10,
+                winner: "Blue",
+                duration: "1h30"
+            },
+            {
+                idTable: "Table8",
+                startDate: new Date('2025-10-16T14:00:00'),
+                redGoal: 6,
+                blueGoal: 10,
+                winner: "Blue",
+                duration: "1h30"
+            },
+            {
+                idTable: "Table9",
+                startDate: new Date('2025-10-16T14:00:00'),
+                redGoal: 6,
+                blueGoal: 10,
+                winner: "Blue",
+                duration: "1h30"
+            },
+            {
+                idTable: "Table10",
+                startDate: new Date('2025-10-16T14:00:00'),
+                redGoal: 6,
+                blueGoal: 10,
+                winner: "Blue",
+                duration: "1h30"
+            },
+            {
+                idTable: "Table11",
+                startDate: new Date('2025-10-16T14:00:00'),
+                redGoal: 6,
+                blueGoal: 10,
+                winner: "Blue",
+                duration: "1h30"
+            },
+            {
+                idTable: "Table12",
+                startDate: new Date('2025-10-16T14:00:00'),
+                redGoal: 6,
+                blueGoal: 10,
+                winner: "Blue",
+                duration: "1h30"
+            },
+            {
+                idTable: "Table13",
                 startDate: new Date('2025-10-16T14:00:00'),
                 redGoal: 6,
                 blueGoal: 10,

@@ -18,7 +18,7 @@
         </ng-template>
         <ng-template pTemplate="body" let-game let-columns="columns">
             <tr>
-                <td *ngFor="let col of columns">
+                <td *ngFor="let col of columns" [ngClass]="{'centred': col.centred}">
                     {{ game[col.field] }}
                 </td>
             </tr>

@@ -8,6 +8,7 @@ import { GameService } from '../../stores/game/game.service';
 export interface TableColumn<T> {
   field: keyof T;
   header: string;
+  centred?: boolean;
 }
 @Component({
   selector: 'app-home',
@@ -20,21 +21,22 @@ export interface TableColumn<T> {
 })
 export class HomeComponent implements OnInit{
 
-  public ngOnInit() {
-    this.gameService.loadGame();
-  }
-
+  
   constructor(private store: Store, private gameService: GameService) {}
-
+  
   gameColumns: TableColumn<GameModel>[] = [
     { field: "idTable", header: "Baby-Foot" },
-    { field: "redGoal", header: "Score Rouge" },
-    { field: "blueGoal", header: "Score Bleu" },
+    { field: "redGoal", header: "Score Rouge", centred: true },
+    { field: "blueGoal", header: "Score Bleu", centred: true },
     { field: "winner", header: "Gagnant" },
     { field: "duration", header: "Durée" },
   ]
-
+  
   get games() {
     return this.store.select(GameState.gamesInProgress);
+  }
+  
+  public ngOnInit() {
+    this.gameService.loadGame();
   }
 }
