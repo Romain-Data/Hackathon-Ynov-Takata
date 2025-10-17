@@ -48,10 +48,60 @@ Avec ces informations, nous avons pu, avec le backend, construire le modèle con
 Le développeur backend s'est occupé de la conception physique puisqu'il souhaite utilisé Spring Boot, une techno que je ne connais pas.
 Mais tout au long de la création, nous avons échanger sur les modifications à apporter avec l'affinement du besoin réel.
 
+Malgré tout ça, au moment du déploiement, on se retrouve avec quelques problèmes de compatibilité de formats de données ou de noms de colonne.
+
+
 ## Nettoyage du dataset.
 
 _merci pour ce dataset... si propre_
+Pour le nettoyage, j'ai essayé de trouver un compromis entre la rapidité et l'efficacité : 
 
-### Choix des colonnes à garder
+Les différentes étapes du nettoyage ont été : 
+- suppression de  toutes les colonnes inutiles pour le projet ou pour les analyses demandées. 
+- uniformisation au maximum du format des données pour ne garder que des formats simples (remplacement des emoji par des nombres)
+- suppression des lignes dont les données paraissaient abérantes :
+    - winner incompatible avec le score renseigné
+    - partie de plus de 20min
 
-Hormis les colonnes nécessaires à l'analyse explicitement demandé 
+Cette étape pourrait être compléteée par des vérifications plus poussées comme vérifier la cohérence du score déclaré avec la somme des buts marqués individuellement par les joueurs.
+
+
+## Analyse exploratoire
+
+L'analyse exploratoire n'a pas été très compliquée en soi.
+
+Pour le top 10 buteurs, j'ai fait le choix de trier les joueurs par ratio buts net / match pour gommer les différences de nombre de matchs et pénaliser les joueurs qui marquent contre leur camps.
+Ce top 10 pourrait être affiché en page d'accueil du site pour créer un aspect compétitif (comme sur les high score des bornes d'arcade)
+
+Pour l'influence de la couleur sur la victoire, j'ai tout de même découvert le **Test du χ²** qui permet de déterminer si un écart entre les données réelles et théoriques sont plus ou moins du au hasard. 
+Cette découvert m'a valu une discussion avec GPT jusque tard dans la nuit pour essayer de comprendre vraiment ce que les valeurs de ce test signifient :
+P-value: 0.1657 (p ≥ 0.05)
+Il n'y a pas de différence significative entre les données théoriques d'un jeu équilibré _(victoire à 50/50)_ et les données réelles.
+
+Les statistiques demandées ont été générées avec python et Tableau.
+
+
+### Statistique d'un joueur
+
+À partir de données calculées sur les parties d'un joueur, nous souhaitions afficher des graphes. Les dev front end ont préféré tenter de développer ça en JavaScript mais ont manqué de temps.
+J'ai tout de même créé des scripts très basiques correspondant aux stats à afficher dans le dossier [dataviz_front](data/dataviz_front)
+
+
+## Bonus IA
+
+Le projet finalisé devait comporter une partie IA pour personnaliser l'expérience utilisateur et favoriser la progression.
+Dans le dashboard de l'utilisateur, à côté de ses statistiques de dernières parties, un encadré viendrait donner un conseil personnalisé pour optimiser les chances de victoires.
+
+Seul POC a pu être créé. 
+Le fichier [[donnees_utilisateurs.csv](../data/donnees_utilisateur.csv)] compile les parties du joueur à l'ID 1.
+Dans le notebook [recommandation_ia.ipynb](../data/recommandation_ia.ipynb), ce fichier est analysé pour extraire des statistiques de jeu (winrate, meilleur poste, etc.)
+Celles-ci sont fournis à un Gémini pour générer un conseil concis et personnalisé. Ce conseil est pour le moment exporté dans un fichier .txt
+
+La génération de ce message est encore très long (> 15s) mais le concept est fonctionnel.
+Le format d'envoi des données vers le front-end sera à définir.
+
+
+# Mot de la fin
+
+Cette expérience intense aura été très enrichissante. Je suisfier que le jury ait senti le potentiel de ce projet en nous remettant le prix du meilleur prototype.
+Je souhaiterais sincèrement poursuivre son développement pour qu'une v1 prenne un jour vie car il représente ce qu'un projet interdisciplinaire peut faire de mieux.
