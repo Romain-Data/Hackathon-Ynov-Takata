@@ -1,6 +1,18 @@
-<div>
-    <p-card header="Informations utilisateur" [style]="{ width: '25rem'}">
+<div class="main">
+    <p-card header="Informations utilisateur" [style]="{ width: '25rem'}" class="card">
         <p class="m-0">
+            Name: {{ user?.name }}
+        </p>
+        <p>
+            Surname: {{user?.surname}}
+        </p>
+        <p>
+            Pseudo: {{user?.pseudo}}
+        </p>
+        <p>
+            Mail: {{user?.mail}}
         </p>
     </p-card>
+    <p-button label="Créer un partie" class="button-game"/>
+    
 </div>

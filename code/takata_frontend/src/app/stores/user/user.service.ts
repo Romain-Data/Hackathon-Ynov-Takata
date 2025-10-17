@@ -19,6 +19,6 @@ export class UserService {
                 password: "string"
             },
         ];
-        this.store.dispatch(new GetUser(userData));
+        return this.store.dispatch(new GetUser(userData));
     }
 }

@@ -8,6 +8,7 @@ import { routes } from './app.routes';
 import { provideStore } from '@ngxs/store';
 import { GameState } from './stores/game/game.state';
 import { BabyfootState } from './stores/babyfoot/babyfoot.state';
+import { UserState } from './stores/user/user.state';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -21,7 +22,8 @@ export const appConfig: ApplicationConfig = {
     provideStore(
       [
         GameState,
-        BabyfootState
+        BabyfootState,
+        UserState
       ],
     )
   ]

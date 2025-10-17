@@ -1,13 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngxs/store';
 import { CardModule } from 'primeng/card';
+import { Button } from 'primeng/button';
 import { UserService } from '../../stores/user/user.service';
 import { UserModel, UserState } from '../../stores/user/user.state';
 
 @Component({
   selector: 'app-user',
+  standalone: true,
   imports: [
-    CardModule
+    CardModule,
+    Button
   ],
   templateUrl: './user.component.html',
   styleUrl: './user.component.scss'
