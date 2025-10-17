@@ -60,11 +60,17 @@ Ce système relie parfaitement la partie embarquée au reste du projet et permet
 Voici la liste des composants utilisés et leur rôle dans le projet :
 
 Raspberry Pi 5 : Microcontrôleur principal : exécute le code Python, gère les capteurs, le servomoteur et la communication avec le backend
+
 Capteur ultrason HC-SR04 : Détecte le passage de la balle dans le but pour comptabiliser un point
+
 Joystick (B105348) :	Permet d’ajouter manuellement un point pour l’équipe bleue
+
 Servomoteur : Actionne mécaniquement une bascule pour relancer la balle
+
 Buzzer piézo :	Joue une courte mélodie (Do-Ré-Mi) à chaque but ou relance
+
 Afficheur 7 segments 5641AS :	Affiche le nombre de relances effectuées pendant la partie
+
 Câblage GPIO (fils Dupont, résistances, breadboard) :	Relie l’ensemble des composants au Raspberry Pi et assure le bon fonctionnement électrique du système
 
 # Conclusion
