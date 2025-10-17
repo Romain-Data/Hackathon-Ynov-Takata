@@ -53,7 +53,7 @@ UPDATE_SCORE_URL = f"{BASE_API_URL}/api/game/updateScore"
 TABLE_ID = 1
 
 # --- Composants ---
-sensor = DistanceSensor(echo=ECHO, trigger=TRIG, max_distance=1.0)
+sensor = DistanceSensor(echo=ECHO, trigger=TRIG, max_distance=4.0)  # portée max 4m
 score_button = Button(JOYSTICK_SW, pull_up=True, bounce_time=0.1)
 servo_button = Button(BTN_PIN, pull_up=True)
 servo = AngularServo(SERVO_PIN, min_angle=0, max_angle=180)
@@ -65,15 +65,16 @@ MELODY = ["C4", "E4", "D4", "C4"]
 NOTE_DURATION = 0.15
 
 # --- Détection ---
-BASE_DISTANCE_CM = 7.0
-THRESHOLD_DROP_CM = 3.0
-IGNORE_TIME = 10.0
+BASE_DISTANCE_CM = 15.0      # distance moyenne balle → capteur
+THRESHOLD_DROP_CM = 5.0      # déclenche si distance diminue de 5 cm
+IGNORE_TIME = 1.0             # temps minimal entre deux détections
 
 # --- Scores ---
 score_red = 0
 score_blue = 0
+servo_count = 0  # compteur appuis servo
 last_detection_time = 0
-smooth_distances = [BASE_DISTANCE_CM] * 5
+smooth_distances = [BASE_DISTANCE_CM] * 3  # moyenne sur 3 mesures
 
 # --- Fonctions ---
 def send_score():
@@ -106,7 +107,7 @@ def on_goal_detected():
     print(f"BUT Rouge ! Score : R={score_red} B={score_blue}")
     play_melody()
     send_score()
-    display_score(score_red)  # Affiche le score rouge
+    # Ne touche pas l'afficheur
 
 def on_score_button():
     """Joystick ajoute un point bleu"""
@@ -115,7 +116,7 @@ def on_score_button():
     print(f"Point Bleu ! Score : R={score_red} B={score_blue}")
     play_melody()
     send_score()
-    display_score(score_blue)  # Affiche le score bleu
+    # Ne touche pas l'afficheur
 
 def set_angle(angle):
     servo.angle = angle
@@ -136,7 +137,7 @@ set_angle(CLOSED_ANGLE)
 score_button.when_pressed = on_score_button
 
 # --- Afficheur initial ---
-display_score(score_red)
+display_score(servo_count)  # affiche compteur servo au démarrage
 
 print("Babyfoot + servo + afficheur lancé. Ctrl+C pour quitter.")
 
@@ -149,13 +150,16 @@ try:
         smooth_distances.append(dist_cm)
         avg_distance = sum(smooth_distances) / len(smooth_distances)
         now = time()
+
         if (avg_distance < (BASE_DISTANCE_CM - THRESHOLD_DROP_CM)
             and (now - last_detection_time) > IGNORE_TIME):
             on_goal_detected()
 
         # Bouton servo
         if servo_button.is_pressed:
-            print("Bouton servo pressé ! BIP + ouverture trappe")
+            servo_count += 1
+            print(f"Bouton servo pressé ! Nombre d'appuis : {servo_count}")
+            display_score(min(servo_count, 9))  # affiche uniquement le compteur servo
             beep(0.2)
             set_angle(OPEN_ANGLE)
             sleep(0.6)
@@ -170,4 +174,3 @@ except KeyboardInterrupt:
 finally:
     servo.detach()
     buzzer.off()
-    # gpiozero gère DigitalOutputDevice automatiquement, pas besoin de cleanup GPIO
