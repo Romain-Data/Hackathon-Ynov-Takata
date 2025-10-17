@@ -2,7 +2,7 @@
 
 ## Equipe
 
-- Dev' FullStack 1 : NOM Prénom
+- Dev' FullStack 1 : ANTRAYGUES Bastien
 - Dev' FullStack 2 : NOM Prénom
 - Dev' FullStack 3 : NOM Prénom
 
@@ -31,3 +31,47 @@ Autrement, il n'y a pas de format imposé, mais essayez de rester clair et conci
 En conclusion, cela doit résumer votre travail en tant que développeur.se FullStack, et vous permettre de garder un trace écrite de votre contribution au projet.
 
 Merci de votre participation, et bon courage pour la suite du hackathon !
+
+# Les fonctionallités implémentées
+
+## Front-end
+
+## Back-end
+- Initialisation du projet avec création des entités : User, Game, BabyFoot_table, User_Game
+- Ajout du CRUD Pour chaque entité ( Repository, Service, Controller )
+- Création d'un service et d'un controller généric possèdant la logique du CRUD qui est hérité par tout les services, controllers
+- Ajout de la fonctionnalité d'updateScore qui attend le score à mettre à jour dans la base de donnée.
+- Création de DTO : BabyFoot_tableDTO, UserDto, GameDto, User_GameDto, GameResultDto
+
+# Technologies utilisées
+
+## Angular
+
+**Rôle** :\
+
+**Pourquoi ce choix** :
+- framework connu par l'équipe dev
+- simple d'utilisation
+
+**Impact** :
+
+
+## Spring Boot
+**Rôle** :
+- Framework Java en back-end
+- API Rest qui communique avec le front-end, et la base de donnée
+
+**Pourquoi ce choix** :
+- Framework connu et à l'aise pour faire une API REST
+- Simple et éfficace pour créer une API REST
+- Facile d'utilisation pour créer un CRUD avec les controllers, les services et repository
+
+## MariaDB
+**Rôle**
+Système de gestion de base de donnée, utilisé pour stocker les données sur des TABLES.
+
+**Pourquoi ce choix**: 
+MariaDb est facile à mettre en place.
+
+# Difficulté rencontré
+- Créer un prototype en 1 journée qui communique la partie des système embarqué, le déploiements du site.
