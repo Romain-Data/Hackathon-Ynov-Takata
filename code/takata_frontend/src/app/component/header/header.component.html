@@ -1,0 +1,16 @@
+<p-toolbar>
+    <ng-template #start>
+        <div class="flex items-center gap-2 header">
+            <h3 (click)="home()">TAKATA</h3>
+            <h3 (click)="dashboard()">Dashboard</h3>
+        </div>
+    </ng-template>
+
+    <ng-template #end>
+        <div class="flex items-center gap-2">
+            <p-button  routerLink="/authenticate"  label="Se connecter" severity="contrast" size="small" />
+            <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png"
+                [style]="{ width: '32px', height: '32px' }" />
+        </div>
+    </ng-template>
+</p-toolbar>
