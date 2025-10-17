@@ -34,9 +34,9 @@ services:
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: rootpass
-      MYSQL_DATABASE: appdb
-      MYSQL_USER: appuser
-      MYSQL_PASSWORD: apppass
+      MYSQL_DATABASE: takata
+      MYSQL_USER: deploy
+      MYSQL_PASSWORD: xxxx
     volumes:
       - mariadb_data:/var/lib/mysql
     networks:
@@ -54,9 +54,9 @@ services:
     depends_on:
       - mariadb
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mariadb://172.20.0.10:3306/appdb
-      SPRING_DATASOURCE_USERNAME: appuser
-      SPRING_DATASOURCE_PASSWORD: apppass
+      SPRING_DATASOURCE_URL: jdbc:mariadb://172.20.0.10:3306/takata
+      SPRING_DATASOURCE_USERNAME: deploy
+      SPRING_DATASOURCE_PASSWORD: xxxx
       SPRING_PROFILES_ACTIVE: prod
     expose:
       - "8080"
@@ -150,15 +150,15 @@ services:
     security_opt:
       - no-new-privileges:true
 
-  ansible:
-    build:
-      context: .
-      dockerfile: infra/ansible/Dockerfile
-    container_name: ansible
-    networks:
-      ansible_net:
-        ipv4_address: 172.30.0.1
-      mon_net:
-    restart: unless-stopped
-    security_opt:
-      - no-new-privileges:true
+#  ansible:
+#    build:
+#      context: .
+#      dockerfile: infra/ansible/Dockerfile
+#    container_name: ansible
+#    networks:
+#      ansible_net:
+#        ipv4_address: 172.30.0.1
+#      mon_net:
+#    restart: unless-stopped
+#    security_opt:
+#      - no-new-privileges:true
