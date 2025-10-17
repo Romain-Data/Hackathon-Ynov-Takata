@@ -44,7 +44,9 @@ Mon but premier était l'avancée globale de l'idée et l'échange d'info entre 
 ## Participation à l'élaboration de la base de données de votre projet
 
 Première étape après avoir défini la direction globale du projet, choisir de quel type de données nous aurions besoin (données utilisateurs, parties...).
-Avec ces informations, nous avons pu, avec le backend, construire le modèle conceptuel de données 
+Avec ces informations, nous avons pu, avec le backend, construire le modèle conceptuel de données ainsi que le modèle logique.
+Le développeur backend s'est occupé de la conception physique puisqu'il souhaite utilisé Spring Boot, une techno que je ne connais pas.
+Mais tout au long de la création, nous avons échanger sur les modifications à apporter avec l'affinement du besoin réel.
 
 ## Nettoyage du dataset.
 

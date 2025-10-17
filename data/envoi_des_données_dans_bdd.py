@@ -14,7 +14,6 @@ engine = create_engine(
     
 
 for table in tables[::-1]:
-    df = pd.read_csv(f'data/{table}.csv')  
-    if 'id' in df.columns:
-        df = df.drop('id', axis=1)
+    df = pd.read_csv(f'data/{table}.csv') 
+    df['version'] = 0 
     df.to_sql(table, engine, if_exists='replace', index=False)
