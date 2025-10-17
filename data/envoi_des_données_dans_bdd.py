@@ -17,3 +17,13 @@ for table in tables[::-1]:
     df = pd.read_csv(f'data/{table}.csv') 
     df['version'] = 0 
     df.to_sql(table, engine, if_exists='replace', index=False)
+=======
+
+    with engine.connect() as conn:
+    conn.execute(text(f"TRUNCATE TABLE {table}"))
+    conn.commit()
+
+    df = pd.read_csv(f'data/{table}.csv') 
+    df['version'] = 0 
+    df.to_sql(table, engine, if_exists='append', index=False)
+>>>>>>> Stashed changes
