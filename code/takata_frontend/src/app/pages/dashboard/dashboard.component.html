@@ -1,0 +1,51 @@
+<div class="main">
+    <div>
+        <h1>Gestion des babyfoots</h1>
+        <p>Contenu</p>
+    </div>
+    <p-table
+        [columns]="babyfootColumns"
+        [value]="(babyfoots | async) ?? []"
+        [tableStyle]="{ 'min-width': '50rem' }"
+        [scrollable]="true"
+        scrollHeight="340px">
+        <ng-template pTemplate="header" let-columns>
+            <tr>
+                <th *ngFor="let col of columns">
+                    {{ col.header }}
+                </th>
+                <th>Actions</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-game let-columns="columns">
+            <tr>
+                <td *ngFor="let col of columns" [ngClass]="{'centred': col.centred}">
+                    {{ game[col.field] }}
+                </td>
+                <td class="actions">
+                  <button class="modify" (click)="editGame(game)">
+                    Modifier
+                  </button>
+                  <button class="delete" (click)="deleteGame(game)">
+                    Supprimer
+                  </button>
+                  <button class="details" (click)="viewDetails(game)">
+                    Détails
+                  </button>
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>
+
+<div *ngIf="selectedGame" class="card">
+  <h2>Détails du babyfoot : {{ selectedGame.babyfoot_Id }}</h2>
+  <ul>
+    <li><strong>Nb de matchs total:</strong> {{ selectedGame.nbmatches }}</li>
+    <li><strong>Etat :</strong> {{ selectedGame.red_goal }}</li>
+    <li><strong>Disponibilité </strong> {{ selectedGame.bleu_goal }}</li>
+  </ul>
+
+  <button class="close" (click)="selectedGame = null">Fermer</button>
+</div>
+

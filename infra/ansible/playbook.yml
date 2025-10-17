@@ -1,0 +1,5 @@
+- name: Test playbook auto
+  hosts: localhost
+  connection: local
+  roles:
+    -
