@@ -1,4 +1,4 @@
-id,date,table_id,duration,red_goal,blue_goal,winner
+id,start_date,table_id,duration,red_goal,blue_goal,winner
 1,2024-03-16,13,1200,5,2,RED
 2,2024-12-26,15,847,9,7,RED
 4,2023-06-12,17,1080,10,8,RED
