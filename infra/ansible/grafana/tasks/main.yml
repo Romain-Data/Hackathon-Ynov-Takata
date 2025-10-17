@@ -1,0 +1,56 @@
+#SPDX-License-Identifier: MIT-0
+---
+# tasks file for grafana
+- name: Créer le dossier de provisioning des datasources Grafana
+  ansible.builtin.file:
+    path: /etc/grafana/provisioning/datasources
+    state: directory
+    owner: 472
+    group: 472
+    mode: '0755'
+
+- name: Provisionner la datasource Prometheus dans Grafana
+  ansible.builtin.copy:
+    src: prometheus-datasource.yml
+    dest: /etc/grafana/provisioning/datasources/prometheus.yml
+    owner: 472
+    group: 472
+    mode: '0644'
+
+- name: Créer le dossier de provisioning des dashboards Grafana
+  ansible.builtin.file:
+    path: /etc/grafana/provisioning/dashboards
+    state: directory
+    owner: 472
+    group: 472
+    mode: '0755'
+
+- name: Copier le dashboard prometheus (ID 1860)
+  ansible.builtin.get_url:
+    url: https://grafana.com/api/dashboards/1860/revisions/9/download
+    dest: /etc/grafana/provisioning/dashboards/prometheus-dashboard.json
+    mode: '0644'
+
+- name: Ajouter la référence à la datasource dans le dashboard
+  ansible.builtin.replace:
+    path: /etc/grafana/provisioning/dashboards/prometheus-dashboard.json
+    regexp: '\$\{DS_PROMETHEUS\}'
+    replace: 'PBFA97CFB590B2093'
+
+- name: Provisionner le dashboard prometheus dans Grafana
+  ansible.builtin.copy:
+    content: |
+      apiVersion: 1
+      providers:
+        - name: 'prometheus-dashboards'
+          orgId: 1
+          folder: ''
+          type: file
+          disableDeletion: false
+          editable: true
+          options:
+            path: /etc/grafana/provisioning/dashboards
+    dest: /etc/grafana/provisioning/dashboards/prometheus-provider.yml
+    owner: 472
+    group: 472
+    mode: '0644'
