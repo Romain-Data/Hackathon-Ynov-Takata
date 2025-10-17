@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
-from gpiozero import DistanceSensor, Button, AngularServo, PWMOutputDevice
+from gpiozero import DistanceSensor, Button, AngularServo, PWMOutputDevice, DigitalOutputDevice
 from time import sleep, time
 import requests
 import os
-import RPi.GPIO as GPIO
 
 # --- Pins BCM ---
 TRIG = 22
@@ -14,8 +13,16 @@ SERVO_PIN = 24
 BUZZER_PIN = 27
 
 # --- Afficheur 7 segments 5641AS (1 chiffre) ---
-# Pins BCM pour chaque segment (à adapter selon ton câblage)
-segments = {'a':14,'b':15,'c':18,'d':25,'e':5,'f':6,'g':16,'dp':20}
+a = DigitalOutputDevice(14)
+b = DigitalOutputDevice(15)
+c = DigitalOutputDevice(18)
+d = DigitalOutputDevice(25)
+e = DigitalOutputDevice(5)
+f = DigitalOutputDevice(6)
+g = DigitalOutputDevice(16)
+dp = DigitalOutputDevice(20)
+
+segments = {'a':a,'b':b,'c':c,'d':d,'e':e,'f':f,'g':g,'dp':dp}
 
 digits = {
     0: ['a','b','c','d','e','f'],
@@ -30,18 +37,15 @@ digits = {
     9: ['a','b','c','d','f','g']
 }
 
-GPIO.setmode(GPIO.BCM)
-for seg in segments.values():
-    GPIO.setup(seg, GPIO.OUT)
-    GPIO.output(seg, 0)  # éteint au départ
-
 def display_score(n):
     """Affiche un chiffre sur le 5641AS"""
-    n = n if n <= 9 else 9  # limiter à 9
+    n = min(n, 9)
+    # Éteindre tous les segments
     for seg in segments.values():
-        GPIO.output(seg, 0)
-    for seg_name in digits.get(n, []):
-        GPIO.output(segments[seg_name], 1)
+        seg.off()
+    # Allumer les segments du chiffre
+    for seg_name in digits[n]:
+        segments[seg_name].on()
 
 # --- Backend ---
 BASE_API_URL = os.getenv("API_URL", "http://localhost")
@@ -102,7 +106,7 @@ def on_goal_detected():
     print(f"BUT Rouge ! Score : R={score_red} B={score_blue}")
     play_melody()
     send_score()
-    display_score(score_red)  # <-- Affiche score rouge sur 1 chiffre
+    display_score(score_red)  # Affiche le score rouge
 
 def on_score_button():
     """Joystick ajoute un point bleu"""
@@ -111,7 +115,7 @@ def on_score_button():
     print(f"Point Bleu ! Score : R={score_red} B={score_blue}")
     play_melody()
     send_score()
-    display_score(score_blue)  # <-- Affiche score bleu sur 1 chiffre
+    display_score(score_blue)  # Affiche le score bleu
 
 def set_angle(angle):
     servo.angle = angle
@@ -166,4 +170,4 @@ except KeyboardInterrupt:
 finally:
     servo.detach()
     buzzer.off()
-    GPIO.cleanup()
+    # gpiozero gère DigitalOutputDevice automatiquement, pas besoin de cleanup GPIO
