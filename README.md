@@ -33,12 +33,10 @@ Bienvenue dans le Hackathon Ynov Toulouse 2025 !
 - Cloud & Infrastructure 1 : BESOMBES Aurélien
 - Cloud & Infrastructure 2 : CENAC Lucille
 - Cloud & Infrastructure 3 : TEHAHE Haunui
-- IA & Data 1 : COLLERY Romain
+- IA & Data 1 : COLLERY Romain (porte parole)
 - IoT/Mobile / Systèmes Embarqués 1 : PESCAY Maxime
 - IoT/Mobile / Systèmes Embarqués 2 : AUBIN DE BELLEVUE Maika
 
-
-> Préciser qui est le porte parole de l'équipe, c'est lui qui répondra aux questions si nécessaire.
 
 ## Table des matières
 
@@ -52,7 +50,7 @@ Bienvenue dans le Hackathon Ynov Toulouse 2025 !
 
 ## Contenu du projet
 
-> Décrivez brièvement le projet, son objectif. Utilisez une vue business pour décrire ce que votre produit/service apporte à vos utilisateurs.
+> Nous proposons une application web permettant de déclarer ses parties de babyfoot,   
 
 ## Technologies utilisées
 
