@@ -14,5 +14,18 @@
         </p>
     </p-card>
     <p-button label="Créer un partie" class="button-game"/>
-    
+
+    <p-card header="Statistiques de jeu" [style]="{ width: '80rem'}" class="card">
+        <div style="display:flex; gap:2rem; flex-wrap:wrap;">
+            <div style="flex:1 1 300px;">
+                <canvas #topScoresCanvas></canvas>
+            </div>
+            <div style="flex:1 1 300px;">
+                <canvas #genreCanvas></canvas>
+            </div>
+            <div style="flex:1 1 600px;">
+                <canvas #activityCanvas></canvas>
+            </div>
+        </div>
+    </p-card>
 </div>
