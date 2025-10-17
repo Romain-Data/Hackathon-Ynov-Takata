@@ -47,6 +47,29 @@ services:
     security_opt:
       - no-new-privileges:true
 
+  python_app:
+    build:
+      context: .
+      dockerfile: infra/python_app/Dockerfile
+    image: python_app:latest
+    container_name: python_app
+    depends_on:
+      - mariadb
+    volumes:
+      - ./data:/app/data
+    environment:
+      DB_HOST: mariadb
+      DB_PORT: 3306
+      DB_USER: deploy
+      DB_PASSWORD: xxxx
+      DB_NAME: takata
+    networks:
+      db_net:
+        ipv4_address: 172.20.0.30
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+
   spring_app:
     build:
       context: .
