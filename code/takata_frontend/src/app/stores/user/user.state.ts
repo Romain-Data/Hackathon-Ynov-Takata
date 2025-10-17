@@ -2,8 +2,9 @@ import { Injectable } from "@angular/core";
 import { Action, State, StateContext, Selector, Store } from "@ngxs/store";
 import { GetUser } from "./user.actions";
 
-interface UserModel {
+export interface UserModel {
     token: string,
+    
 }
 
 export interface UserStateModel {

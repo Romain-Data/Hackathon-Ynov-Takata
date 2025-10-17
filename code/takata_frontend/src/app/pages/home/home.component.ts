@@ -4,11 +4,11 @@ import { TableModule } from 'primeng/table';
 import { Store } from '@ngxs/store';
 import { GameModel, GameState } from '../../stores/game/game.state';
 import { GameService } from '../../stores/game/game.service';
-import { Observable } from 'rxjs';
 
 export interface TableColumn<T> {
   field: keyof T;
   header: string;
+  centred?: boolean;
 }
 @Component({
   selector: 'app-home',
@@ -21,25 +21,22 @@ export interface TableColumn<T> {
 })
 export class HomeComponent implements OnInit{
 
-  public games!: Observable<GameModel[]>;
-
-  public ngOnInit() {
-    this.gameService.loadGame();
-    this.games = this.store.select(GameState.games);
-    this.games.subscribe(data => console.log('games from store', data));
-  }
-
+  
   constructor(private store: Store, private gameService: GameService) {}
-
+  
   gameColumns: TableColumn<GameModel>[] = [
-    { field: "idTable", header: "Baby-Foot" },
-    { field: "redGoal", header: "Score Rouge" },
-    { field: "blueGoal", header: "Score Bleu" },
+    { field: "babyfoot_tableId", header: "Baby-Foot" },
+    { field: "red_goal", header: "Score Rouge", centred: true },
+    { field: "bleu_goal", header: "Score Bleu", centred: true },
     { field: "winner", header: "Gagnant" },
     { field: "duration", header: "Durée" },
   ]
-
-  // get games() {
-  //   return this.store.select(GameState.games);
-  // }
+  
+  get games() {
+    return this.store.select(GameState.gamesInProgress);
+  }
+  
+  public ngOnInit() {
+    this.gameService.loadGame();
+  }
 }
