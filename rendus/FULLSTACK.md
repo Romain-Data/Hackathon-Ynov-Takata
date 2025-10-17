@@ -35,6 +35,12 @@ Merci de votre participation, et bon courage pour la suite du hackathon !
 # Les fonctionallités implémentées
 
 ## Front-end
+- Initialisation du projet **Angular**.
+- Création du **store** pour les entités `User`, `Game` et `Babyfoot`, avec des données en dur en attendant l’évolution du back-end.
+- Création de la **page d’accueil**, contenant un tableau permettant de suivre les scores des parties en cours.
+- Création de la **page d’authentification** et de la **page de création de compte**.
+- Création de la **page Dashboard**, avec un tableau récapitulant les informations sur les babyfoots et offrant la possibilité de `modifier` ou `supprimer` un babyfoot.
+- Création de la **page User**, affichant les informations de l’utilisateur et permettant de `créer une partie`.
 
 ## Back-end
 - Initialisation du projet avec création des entités : User, Game, BabyFoot_table, User_Game
@@ -47,7 +53,8 @@ Merci de votre participation, et bon courage pour la suite du hackathon !
 
 ## Angular
 
-**Rôle** :\
+**Rôle** :
+- Framework javascript Front-end
 
 **Pourquoi ce choix** :
 - framework connu par l'équipe dev
@@ -77,3 +84,6 @@ MariaDb est facile à mettre en place.
 - Créer un prototype en 1 journée qui communique la partie des système embarqué, le déploiements du site.
 - Relier le front, le back et la base de donnée entre eux tout en ayant déployer le site.
 - Créer l'API sans avoir de BD propre et complété dans le temps imparti.
+- Utilisation de **Chart.js** pour la création des graphiques destinés aux utilisateurs.
+- La communication avec le backend.
+- Développement de l’ensemble des fonctionnalités prévues pour le front-end dans le temps imparti.
