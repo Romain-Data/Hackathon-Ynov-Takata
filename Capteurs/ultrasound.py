@@ -1,11 +1,15 @@
 #!/usr/bin/env python3
 from gpiozero import DistanceSensor, Button, PWMOutputDevice
 from time import sleep, time
+import requests 
+
+API_RED = "http://APIURL/api/game/red"
+API_BLUE = "http://APIURL/api/game/blue"
 
 # --- Broches GPIO ---
 TRIG = 22
 ECHO = 23
-JOYSTICK_SW = 17
+JOYSTICK_SW = 26
 BUZZER = 27
 
 # --- Initialisation des composants ---
@@ -28,6 +32,17 @@ score = 0
 last_detection_time = 0
 smooth_distances = [BASE_DISTANCE_CM] * 5  # buffer pour moyenne mobile
 
+def send_score(team):
+    """Envoie une requête POST au backend pour l'équipe donnée."""
+    try:
+        if team == "red":
+            requests.post(API_RED)
+        elif team == "blue":
+            requests.post(API_BLUE)
+        print(f"Score envoyé pour {team}")
+    except Exception as e:
+        print(f"Erreur en envoyant le score pour {team} :", e)
+
 def play_melody():
     """Joue une courte mélodie."""
     for note in MELODY:
@@ -44,6 +59,8 @@ def on_goal_detected():
     last_detection_time = time()
     print(f"⚽ BUT ! Nouveau score : {score}")
     play_melody()
+    send_score("red")  
+
 
 def on_button_press():
     """Appui manuel sur joystick."""
@@ -51,6 +68,8 @@ def on_button_press():
     score += 1
     print(f"🕹️ Joystick appuyé ! Score : {score}")
     play_melody()
+    send_score("red")  
+
 
 button.when_pressed = on_button_press
 
