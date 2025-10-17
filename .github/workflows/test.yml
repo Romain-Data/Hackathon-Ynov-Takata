@@ -1,0 +1,181 @@
+name: CI/CD - Angular + Spring + Docker Compose (RPi)
+
+on:
+  push:
+    branches: [ "main", "infra" ]
+  pull_request:
+    branches: [ "main", "infra" ]
+
+permissions:
+  contents: read
+  packages: write
+  id-token: write
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_PREFIX: ghcr.io/${{ github.repository }}   # ghcr.io/owner/repo
+  PLATFORMS: linux/amd64,linux/arm64,linux/arm/v7  # inclut RPi
+
+jobs:
+  frontend:
+    name: Frontend - Lint & Build Angular
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend   # <-- adapte ton chemin Angular
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+          cache-dependency-path: 'frontend/package-lock.json'
+      - name: Install deps
+        run: npm ci
+      - name: Lint
+        run: npm run lint --if-present
+      - name: Tests
+        run: npm test -- --watch=false --browsers=ChromeHeadless || true  # mets en obligatoire si tu as des tests
+      - name: Build (prod)
+        run: npm run build -- --configuration production
+      - name: Upload dist (artifact pour l'image Docker)
+        uses: actions/upload-artifact@v4
+        with:
+          name: angular-dist
+          path: frontend/dist/**
+
+  backend:
+    name: Backend - Test & Package Spring Boot
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend   # <-- adapte ton chemin Spring Boot
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+          cache: 'maven'
+      - name: Unit tests
+        run: mvn -B -DskipITs test
+      - name: Package (jar)
+        run: mvn -B -DskipTests package
+      - name: Upload jar (artifact pour l'image Docker)
+        uses: actions/upload-artifact@v4
+        with:
+          name: spring-jar
+          path: backend/target/*.jar
+
+  build-and-push:
+    name: Buildx multi-arch & Push images
+    runs-on: ubuntu-latest
+    needs: [ frontend, backend ]
+    steps:
+      - uses: actions/checkout@v4
+
+      # Récupère les artefacts
+      - name: Download Angular dist
+        uses: actions/download-artifact@v4
+        with:
+          name: angular-dist
+          path: frontend/dist
+      - name: Download Spring jar
+        uses: actions/download-artifact@v4
+        with:
+          name: spring-jar
+          path: backend/target
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+      - name: Set up Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      # Tags dynamiques (latest si branche par défaut + sha + nom de branche)
+      - name: Meta app-backend
+        id: meta_backend
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.IMAGE_PREFIX }}-backend
+          tags: |
+            type=raw,value=latest,enable={{is_default_branch}}
+            type=sha,prefix=sha-,format=short
+            type=ref,event=branch
+      - name: Meta app-frontend
+        id: meta_frontend
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.IMAGE_PREFIX }}-frontend
+          tags: |
+            type=raw,value=latest,enable={{is_default_branch}}
+            type=sha,prefix=sha-,format=short
+            type=ref,event=branch
+
+      # Build & push BACKEND (Spring) - suppose un Dockerfile à backend/Dockerfile
+      - name: Build & Push backend
+        uses: docker/build-push-action@v6
+        with:
+          context: ./backend
+          file: ./backend/Dockerfile
+          platforms: ${{ env.PLATFORMS }}
+          push: true
+          tags: ${{ steps.meta_backend.outputs.tags }}
+          labels: ${{ steps.meta_backend.outputs.labels }}
+          build-args: |
+            JAR_FILE=$(basename $(ls backend/target/*.jar))
+
+      # Build & push FRONTEND (Angular + Nginx) - suppose un Dockerfile à frontend/Dockerfile
+      - name: Build & Push frontend
+        uses: docker/build-push-action@v6
+        with:
+          context: ./frontend
+          file: ./frontend/Dockerfile
+          platforms: ${{ env.PLATFORMS }}
+          push: true
+          tags: ${{ steps.meta_frontend.outputs.tags }}
+          labels: ${{ steps.meta_frontend.outputs.labels }}
+
+  deploy:
+    name: Deploy to Raspberry Pi
+    runs-on: ubuntu-latest
+    needs: [ build-and-push ]
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - name: SSH deploy (docker compose pull & up)
+        uses: appleboy/ssh-action@v1.1.0
+        with:
+          host: ${{ secrets.RPI_HOST }}
+          username: ${{ secrets.RPI_USER }}
+          key: ${{ secrets.RPI_SSH_KEY }}
+          script: |
+            set -e
+            cd ${{ secrets.RPI_DEPLOY_PATH }}
+            # Si ton compose référence les images taggées 'latest', rien à changer.
+            # Sinon, exporte les tags SHA dans un .env et compose les consommera.
+            echo "Pulling images…"
+            docker login ghcr.io -u "${{ github.actor }}" -p "${{ secrets.GITHUB_TOKEN }}" || true
+            docker compose pull
+            docker compose up -d --remove-orphans
+            docker image prune -af || true
+
+      # (Optionnel) Migrations Flyway pour MariaDB
+      - name: Run Flyway migrations
+        if: ${{ success() && vars.ENABLE_FLYWAY == 'true' }}
+        uses: appleboy/ssh-action@v1.1.0
+        with:
+          host: ${{ secrets.RPI_HOST }}
+          username: ${{ secrets.RPI_USER }}
+          key: ${{ secrets.RPI_SSH_KEY }}
+          script: |
+            docker run --rm \
+              -v ${{ secrets.RPI_DEPLOY_PATH }}/db/migrations:/flyway/sql \
+              flyway/flyway:9-alpine \
+              -url="jdbc:mariadb://$DB_HOST:$DB_PORT/$DB_NAME" \
+              -user="$DB_USER" -password="$DB_PASSWORD" migrate

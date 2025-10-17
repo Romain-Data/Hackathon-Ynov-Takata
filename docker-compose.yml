@@ -37,6 +37,8 @@ services:
       MYSQL_DATABASE: takata
       MYSQL_USER: deploy
       MYSQL_PASSWORD: xxxx
+    ports:
+      - "3306:3306"
     volumes:
       - mariadb_data:/var/lib/mysql
     networks:
