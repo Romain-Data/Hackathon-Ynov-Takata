@@ -56,14 +56,14 @@ Bienvenue dans le Hackathon Ynov Toulouse 2025 !
 
 > Ici, listez les principales technologies, en expliquant pourquoi vous les avez choisies. Tout choix technique, langages, frameworks doit être justifié. (Parce que vous maîtrisez déjà la techno, parce que c'est la plus adaptée au besoin, parce que c'est la plus innovante, etc.)
 
-- Docker
-- Prometheus
-- Grafana
+- Docker - Conteneurisation des services
+- Prometheus - Surveillance et métriques
+- Grafana - Visualisation des données
 - Raspberry Pi 5 (os Rasbian)
-- MariaDB
-- Nginx
-- Spring bout
-- Angular
+- MariaDB - Base de données relationnelle
+- Nginx - Serveur web et reverse proxy
+- Spring boot - Backend Java
+- Angular - Frontend dynamique
 
 ## Architecture
 
