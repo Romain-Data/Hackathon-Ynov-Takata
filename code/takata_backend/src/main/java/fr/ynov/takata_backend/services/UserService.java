@@ -5,4 +5,5 @@ import fr.ynov.takata_backend.generic.GenericService;
 
 public interface UserService extends GenericService<UserDto, Long> {
 
+	
 }

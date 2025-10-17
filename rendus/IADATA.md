@@ -2,7 +2,7 @@
 
 ## Equipe
 
-- IA & Data 1 : NOM Prénom
+- IA & Data 1 : COLLERY Romain
 
 Et si on réinventait l’expérience babyfoot à Ynov ? L’objectif de ce hackathon est de moderniser et digitaliser l’usage des babyfoots présents dans le Souk pour créer un service _next-gen_, pensé pour près de 1000 étudiants !
 
@@ -29,3 +29,29 @@ Autrement, il n'y a pas de format imposé, mais essayez de rester clair et conci
 En conclusion, cela doit résumer votre travail en tant qu'expert.e IA Data, et vous permettre de garder un trace écrite de votre contribution au projet.
 
 Merci de votre participation, et bon courage pour la suite du hackathon !
+
+
+---
+
+# Vision globale
+
+Sur ce projet, avec ma (toute) petite expérience de gestion de projet, j'ai pris le lead sur l'organisation et la communication entre les membres de l'équipe.
+
+Mon but premier était l'avancée globale de l'idée et l'échange d'info entre les différentes équipes. À interval régulier, j'ai demandé aux groupes où ils en étaient, s'ils étaient bloqués, si oui, par quoi et quelles étaient leurs prochaines étapes.
+
+# Partie Data
+
+## Participation à l'élaboration de la base de données de votre projet
+
+Première étape après avoir défini la direction globale du projet, choisir de quel type de données nous aurions besoin (données utilisateurs, parties...).
+Avec ces informations, nous avons pu, avec le backend, construire le modèle conceptuel de données ainsi que le modèle logique.
+Le développeur backend s'est occupé de la conception physique puisqu'il souhaite utilisé Spring Boot, une techno que je ne connais pas.
+Mais tout au long de la création, nous avons échanger sur les modifications à apporter avec l'affinement du besoin réel.
+
+## Nettoyage du dataset.
+
+_merci pour ce dataset... si propre_
+
+### Choix des colonnes à garder
+
+Hormis les colonnes nécessaires à l'analyse explicitement demandé 

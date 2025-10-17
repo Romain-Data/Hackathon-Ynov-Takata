@@ -27,15 +27,16 @@ Bienvenue dans le Hackathon Ynov Toulouse 2025 !
 
 ## Equipe
 
-- Dev' FullStack 1 : NOM Prénom
-- Dev' FullStack 2 : NOM Prénom
-- Dev' FullStack 3 : NOM Prénom
-- Cloud & Infrastructure 1 : NOM Prénom
-- Cloud & Infrastructure 2 : NOM Prénom
-- IA & Data 1 : NOM Prénom
-- IoT/Mobile / Systèmes Embarqués 1 : NOM Prénom
+- Dev' FullStack 1 : ANTRAYGUES Bastien
+- Dev' FullStack 2 : ABADIE Thomas
+- Dev' FullStack 3 : BERNARD Julien
+- Cloud & Infrastructure 1 : BESOMBES Aurélien
+- Cloud & Infrastructure 2 : CENAC Lucille
+- Cloud & Infrastructure 3 : TEHAHE Haunui
+- IA & Data 1 : COLLERY Romain (porte parole)
+- IoT/Mobile / Systèmes Embarqués 1 : PESCAY Maxime
+- IoT/Mobile / Systèmes Embarqués 2 : AUBIN DE BELLEVUE Maika
 
-> Préciser qui est le porte parole de l'équipe, c'est lui qui répondra aux questions si nécessaire.
 
 ## Table des matières
 
@@ -49,21 +50,46 @@ Bienvenue dans le Hackathon Ynov Toulouse 2025 !
 
 ## Contenu du projet
 
-> Décrivez brièvement le projet, son objectif. Utilisez une vue business pour décrire ce que votre produit/service apporte à vos utilisateurs.
+> Nous proposons une application web permettant de déclarer ses parties de babyfoot,   
+
+Le projet a pour objectif de digitaliser l’expérience autour des matchs de baby-foot. Du côté des joueurs, il leur permet de créer un compte, d’enregistrer automatiquement leurs parties et de consulter des statistiques personnalisées telles que leur taux de victoire, leur couleur favorite ou encore leur poste de prédilection (attaque ou défense). L’administrateur dispose quant à lui d’un outil pour gérer les tables de baby-foot disponibles, en indiquant lesquelles sont actives ou hors service. Enfin, tout le monde, même sans compte, peut suivre en direct le score des parties en cours grâce à un affichage temps réel accessible depuis un écran ou un navigateur.
 
 ## Technologies utilisées
 
 > Ici, listez les principales technologies, en expliquant pourquoi vous les avez choisies. Tout choix technique, langages, frameworks doit être justifié. (Parce que vous maîtrisez déjà la techno, parce que c'est la plus adaptée au besoin, parce que c'est la plus innovante, etc.)
 
+- Docker - Conteneurisation des services
+- Prometheus - Surveillance et métriques
+- Grafana - Visualisation des données
+- Raspberry Pi 5 (os Rasbian)
+- MariaDB - Base de données relationnelle
+- Nginx - Serveur web et reverse proxy
+- Spring boot - Backend Java
+- Angular - Frontend dynamique
+
 ## Architecture
 
 > Faite un schéma simple de l'architecture technique de votre solution. Chaque service/composant est un bloc, et les interactions entre les blocs sont des flèches. Vous pouvez utiliser des outils comme [draw.io](https://app.diagrams.net/), ou encore [Excalidraw](https://excalidraw.com/) pour créer vos schémas. C'est une vue d'ensemble, pas un détail de chaque composant. Chacun d'entre vous doit être capable d'expliquer cette architecture.
+
+![img](ressources/schéma%20infra-2.png)
 
 ## Guide de déploiement
 
 > Expliquez comment déployer votre application **EN MOINS DE LIGNES DE COMMANDE POSSIBLES**. Docker, Ansible, Terraform, Scripts Shell... Le but est de pouvoir déployer votre application en une seule commande ou presque.
 
-Exemple de lancement en **une seule commande**:
+Cloner le repository :
+```bash
+git clone https://github.com/Romain-Data/Hackathon-Ynov-Takata.git
+```
+Build des conteneurs :
+```bash
+docker compose build --no-cache
+```
+Lancement de l'appli : 
+```bash
+docker compose up -d
+```
+L'application est maintenant disponible sur http://localhost ou http://<ip_host>
 
 [Références Proxmox HelperScripts](https://github.com/community-scripts/ProxmoxVE/tree/main/install)
 
@@ -74,3 +100,16 @@ Exemple de lancement en **une seule commande**:
 > Section d'honnêteté, décrivez ce qui n'a pas été fait, ce qui aurait pu être amélioré, les limitations de votre solution actuelle. Montrez que vous avez une vision critique de votre travail, de ce qui a été accompli durant ces deux demi-journées.
 
 Le but n'est pas de faire un produit fini, mais de montrer vos compétences techniques, votre capacité à travailler en équipe, à gérer un projet, et à livrer quelque chose de fonctionnel dans un temps limité.
+
+---
+**Côté infrastructure** :\
+Plusieurs problèmes ont été rencontrés lors du déploiement, notamment liés à la configuration des environnements et à la mise en place des services nécessaires au bon fonctionnement de l’application. Ces difficultés ont entraîné des retards et ont limité les tests de bout en bout.
+
+**Côté système embarqué** :\
+Nous n’avons pas pu effectuer les tests de communication entre le dispositif embarqué et le backend. En conséquence, la réception et la transmission des scores n’ont pas pu être validées.
+
+**Côté développement applicatif** :\
+La communication entre le backend et le frontend n’a pas été finalisée. Les données sont actuellement transmises sous forme brute, sans traitement ni intégration dans l’interface utilisateur.
+
+**Sécurité et authentification** :\
+Les fonctionnalités d’authentification des utilisateurs et de sécurisation du backend n’ont pas été réalisées. Le système reste donc accessible sans contrôle d’accès ni protection des échanges.
