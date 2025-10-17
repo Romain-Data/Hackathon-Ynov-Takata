@@ -13,6 +13,11 @@ export const routes: Routes = [
             import('./pages/authenticate/authenticate.component').then(m => m.AuthenticateComponent),
     },
     {
+        path: 'register',
+        loadComponent: () =>
+            import('./pages/register/register.component').then(m => m.RegisterComponent),
+    },
+    {
         path: '',
         pathMatch: 'full',
         redirectTo: 'home',   // redirection de / vers /home
