@@ -1,5 +1,5 @@
 import pandas as pd
-from sqlalchemy import create_engine, text
+from sqlalchemy import create_engine, text, inspect
 
 tables = ['user', 'baby_foot_table', 'game', 'user_game']
 
@@ -13,17 +13,17 @@ engine = create_engine(
     f'mysql+pymysql://{user}:{password}@{host}:{port}/{database_name}')
     
 
-for table in tables[::-1]:
-    df = pd.read_csv(f'data/{table}.csv') 
-    df['version'] = 0 
-    df.to_sql(table, engine, if_exists='replace', index=False)
-=======
+inspector = inspect(engine)
 
-    with engine.connect() as conn:
-    conn.execute(text(f"TRUNCATE TABLE {table}"))
-    conn.commit()
+for table in tables[::-1]:
+    # Vérifier si la table existe
+    if table in inspector.get_table_names():
+        with engine.connect() as conn:
+            conn.execute(text(f"TRUNCATE TABLE {table}"))
+            conn.commit()
+    else:
+        print(f"Table '{table}' n'existe pas, création...")
 
     df = pd.read_csv(f'data/{table}.csv') 
     df['version'] = 0 
     df.to_sql(table, engine, if_exists='append', index=False)
->>>>>>> Stashed changes
