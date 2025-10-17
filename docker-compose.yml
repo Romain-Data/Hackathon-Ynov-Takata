@@ -15,6 +15,12 @@ networks:
       config:
         - subnet: 172.22.0.0/24
 
+  ansible_net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.30.0.0/24
+
 volumes:
   mariadb_data:
   grafana_data:
@@ -41,8 +47,8 @@ services:
 
   spring_app:
     build:
-      context: ./spring_app
-      dockerfile: Dockerfile
+      context: infra/spring_app
+      dockerfile: infra/spring_app/Dockerfile
     image: spring_app:arm64
     container_name: spring_app
     depends_on:
@@ -65,8 +71,8 @@ services:
 
   angular_app:
     build:
-      context: ./angular_app
-      dockerfile: Dockerfile
+      context: infra/angular_app
+      dockerfile: infra/angular_app/Dockerfile
     image: angular_app:arm64
     container_name: angular_app
     expose:
@@ -141,5 +147,18 @@ services:
       mon_net:
         ipv4_address: 172.22.0.12
     restart: always
+    security_opt:
+      - no-new-privileges:true
+
+  ansible:
+    build:
+      context: infra/ansible
+      dockerfile: infra/ansible/Dockerfile
+    container_name: ansible
+    networks:
+      ansible_net:
+        ipv4_address: 172.30.0.1
+      mon_net:
+    restart: unless-stopped
     security_opt:
       - no-new-privileges:true
