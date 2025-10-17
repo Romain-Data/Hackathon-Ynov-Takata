@@ -3,11 +3,11 @@
         <h1>Bienvenue sur la page d'accueil</h1>
         <p>Contenu</p>
     </div>
-    <p-table 
-        [columns]="gameColumns" 
-        [value]="(games | async) ?? []" 
+    <p-table
+        [columns]="gameColumns"
+        [value]="(games | async) ?? []"
         [tableStyle]="{ 'min-width': '50rem' }"
-        [scrollable]="true" 
+        [scrollable]="true"
         scrollHeight="340px">
         <ng-template pTemplate="header" let-columns>
             <tr>
