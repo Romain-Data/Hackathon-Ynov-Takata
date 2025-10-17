@@ -23,6 +23,11 @@ export const routes: Routes = [
             import('./pages/dashboard/dashboard.component').then(m => m.DashboardComponent),
     },
     {
+        path: 'user',
+        loadComponent: () =>
+            import('./pages/user/user.component').then(m => m.UserComponent),
+    },
+    {
         path: '',
         pathMatch: 'full',
         redirectTo: 'home',   // redirection de / vers /home

@@ -3,7 +3,13 @@ import { Action, State, StateContext, Selector, Store } from "@ngxs/store";
 import { GetUser } from "./user.actions";
 
 export interface UserModel {
-    token: string,
+    // token: string,
+    name: string,
+    surname: string,
+    pseudo: string,
+    mail: string,
+    role: string,
+    password: string
     
 }
 
