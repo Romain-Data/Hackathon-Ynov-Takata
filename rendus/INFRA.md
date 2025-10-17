@@ -77,7 +77,7 @@ C’est aussi un point d’entrée unique qui renforce la sécurité réseau.
 - Peut facilement évoluer vers du load balancing.
 
 **Impact** :\
-→ Sécurisation + scalabilité future de l’application.
+→ Sécurisation et scalabilité future de l’application.
 
 ## MariaDB
 
@@ -110,7 +110,7 @@ Surveiller en temps réel l’état du Raspberry Pi et des conteneurs.
 - Compatible ARM64.
 
 **Impact** :\
-→ Répond à la section Monitoring avec suivi du host + services, et possibilité d’alerter.
+→ Suivi du host et des services, possibilité d’alerter.
 
 ## Ansible
 
@@ -133,7 +133,7 @@ Automatise la configuration et la gestion des serveurs à l’aide de scripts d�
 Automatiser les tests, le build et le déploiement de l’application à chaque commit.
 
 **Pourquoi ce choix** :
-- Gratuit et intégré à GitHub, parfait pour un hackathon.
+- Gratuit et intégré à GitHub
 - Exécute automatiquement :
   - Linting du code (qualité),
   - Tests unitaires (fiabilité),
@@ -177,5 +177,6 @@ Aujourd’hui, seule la machine hôte est supervisée. En intégrant également 
 
 **Ajouter un système d’alerting avec Prometheus** \
 Les métriques sont visibles dans Grafana, mais uniquement via consultation manuelle. En activant l’alerting, on recevra automatiquement des notifications en cas de dépassement de seuil ou de comportement anormal.
-Mettre en place un serveur DNS pour la résolution de noms.\
+
+**Mettre en place un serveur DNS pour la résolution de noms** \
 Aujourd’hui, les services sont accessibles via leurs adresses IP. L’ajout d’un DNS permettrait d’utiliser des noms clairs et mémorisables (ex : grafana.local ou api.local), ce qui simplifierait la gestion et l’accès aux différents services.
