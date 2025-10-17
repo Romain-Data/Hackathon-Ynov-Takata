@@ -42,7 +42,7 @@ export class BabyfootService {
                 nbmatches: "65",
             },
             {
-                babyfoot_Id: "Babyfoot9",
+                babyfoot_Id: "Babyfoot6",
                 red_goal: "Usé",
                 bleu_goal: "Jeu en cours",
                 nbmatches: "105",
@@ -61,7 +61,7 @@ export class BabyfootService {
             },
             {
                 babyfoot_Id: "Babyfoot9",
-                red_goal: "",
+                red_goal: "Neuf",
                 bleu_goal: "Disponible",
                 nbmatches: "47",
             },
