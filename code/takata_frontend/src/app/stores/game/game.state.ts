@@ -1,11 +1,11 @@
 import { Injectable } from "@angular/core";
 import { Action, State, StateContext, Selector, Store } from "@ngxs/store";
-import { GetGames } from "./game.actions";
+import { GetGames, GetGamesInProgress } from "./game.actions";
 
 export interface GameModel {
     idTable: string,
     startDate: Date,
-    endDate: Date,
+    endDate?: Date,
     redGoal: number,
     blueGoal: number,
     winner?: string,
@@ -28,6 +28,11 @@ export class GameState {
     @Selector()
     static games(state: GameStateModel) {
         return state.games;
+    }
+
+    @Selector()
+    static gamesInProgress(state: GameStateModel) {
+        return state.games.filter(game => game.endDate === undefined);
     }
 
     @Action(GetGames)

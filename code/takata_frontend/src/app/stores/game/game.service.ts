@@ -47,6 +47,23 @@ export class GameService {
                 winner: "Blue",
                 duration: "1h30"
             },
+            {
+                idTable: "Table5",
+                startDate: new Date('2025-10-16T14:00:00'),
+                endDate: undefined,
+                redGoal: 6,
+                blueGoal: 10,
+                winner: "Blue",
+                duration: "1h30"
+            },
+            {
+                idTable: "Table6",
+                startDate: new Date('2025-10-16T14:00:00'),
+                redGoal: 6,
+                blueGoal: 10,
+                winner: "Blue",
+                duration: "1h30"
+            },
         ];
         this.store.dispatch(new GetGames(gamesData));
     }

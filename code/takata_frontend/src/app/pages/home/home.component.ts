@@ -4,7 +4,6 @@ import { TableModule } from 'primeng/table';
 import { Store } from '@ngxs/store';
 import { GameModel, GameState } from '../../stores/game/game.state';
 import { GameService } from '../../stores/game/game.service';
-import { Observable } from 'rxjs';
 
 export interface TableColumn<T> {
   field: keyof T;
@@ -21,12 +20,8 @@ export interface TableColumn<T> {
 })
 export class HomeComponent implements OnInit{
 
-  public games!: Observable<GameModel[]>;
-
   public ngOnInit() {
     this.gameService.loadGame();
-    this.games = this.store.select(GameState.games);
-    this.games.subscribe(data => console.log('games from store', data));
   }
 
   constructor(private store: Store, private gameService: GameService) {}
@@ -39,7 +34,7 @@ export class HomeComponent implements OnInit{
     { field: "duration", header: "Durée" },
   ]
 
-  // get games() {
-  //   return this.store.select(GameState.games);
-  // }
+  get games() {
+    return this.store.select(GameState.gamesInProgress);
+  }
 }
