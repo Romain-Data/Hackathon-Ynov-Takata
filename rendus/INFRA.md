@@ -130,4 +130,35 @@ Automatiser les tests, le build et le déploiement de l’application à chaque 
 
 ---
 
+# Etat des lieux
 
+L'infrastructure est opérationnelle :
+- Déploiement de l'infrastructure via docker compose
+- Restriction des flux réseaux des conteneurs docker, ce qui permet de limiter les risques de propagation en cas d’attaque
+- Mise en place de monitoring fonctionnel sur la partie hardware
+- Serveur web et reverse proxy
+- Communication entre Spring boot et Angular
+
+Cependant, suite à des problèmes rencontrés avec la base de données, l'API backend (spring boot) ne fonctionne pas correctement, empêchant l'accès aux données via l'API.
+
+De plus, impossible de tester nos configurations ansible car nous sommes bloqués par d'autres étapes antérieures
+
+Par ailleurs, suite à un manque de matériel, de temps et de connaissances nous n'avons pas pu finaliser la partie CI/CD avec Github Actions
+
+# Axes d'améliorations
+
+Plusieurs évolutions sont prévues pour fiabiliser davantage notre infrastructure :
+
+**Mettre en place le conteneur de sauvegarde MariaDB** \
+Pour l’instant, aucune sauvegarde automatisée n’est opérationnelle. La création de ce conteneur est donc essentielle afin de garantir la protection des données et de pouvoir les restaurer en cas de défaillance.
+
+**Garantir la haute disponibilité du serveur web** \
+Nginx fonctionne correctement, mais il repose sur une seule instance. En cas de panne, tout le service devient indisponible. Mettre en place un mécanisme de redondance ou de bascule permettra d’assurer une continuité de service.
+
+**Étendre la supervision à tous les conteneurs Docker** \
+Aujourd’hui, seule la machine hôte est supervisée. En intégrant également chaque conteneur dans la surveillance, on obtient une vision complète du système et on détecte plus rapidement les anomalies.
+
+**Ajouter un système d’alerting avec Prometheus** \
+Les métriques sont visibles dans Grafana, mais uniquement via consultation manuelle. En activant l’alerting, on recevra automatiquement des notifications en cas de dépassement de seuil ou de comportement anormal.
+Mettre en place un serveur DNS pour la résolution de noms.\
+Aujourd’hui, les services sont accessibles via leurs adresses IP. L’ajout d’un DNS permettrait d’utiliser des noms clairs et mémorisables (ex : grafana.local ou api.local), ce qui simplifierait la gestion et l’accès aux différents services.
