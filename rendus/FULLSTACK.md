@@ -36,11 +36,11 @@ Merci de votre participation, et bon courage pour la suite du hackathon !
 
 ## Front-end
 - Initialisation du projet **Angular**.
-- Création du **store** pour les entités `User`, `Game` et `Babyfoot`, avec des données en dur en attendant l’évolution du back-end.
 - Création de la **page d’accueil**, contenant un tableau permettant de suivre les scores des parties en cours.
 - Création de la **page d’authentification** et de la **page de création de compte**.
 - Création de la **page Dashboard**, avec un tableau récapitulant les informations sur les babyfoots et offrant la possibilité de `modifier` ou `supprimer` un babyfoot.
 - Création de la **page User**, affichant les informations de l’utilisateur et permettant de `créer une partie`.
+- Création du **store** pour les entités `User`, `Game` et `Babyfoot`, avec des données en dur en attendant l’évolution du back-end.
 
 ## Back-end
 - Initialisation du projet avec création des entités : User, Game, BabyFoot_table, User_Game
