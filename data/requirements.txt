@@ -1,5 +1,4 @@
 pandas
 python-dotenv
-re
 sqlalchemy
 pymysql
